@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Wizard</class>
+ <widget class="QWizard" name="Wizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Wizard</string>
+  </property>
+  <property name="wizardStyle">
+   <enum>QWizard::ClassicStyle</enum>
+  </property>
+  <widget class="Page1" name="wizardPage1"/>
+  <widget class="Page2" name="wizardPage2"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Page1</class>
+   <extends>QWizardPage</extends>
+   <header>page1.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Page2</class>
+   <extends>QWizardPage</extends>
+   <header>page2.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

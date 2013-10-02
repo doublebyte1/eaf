@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/eaf" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
