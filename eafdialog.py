@@ -24,13 +24,16 @@ from PyQt4 import QtCore, QtGui
 #from ui_eaf import Ui_eaf
 
 from eaf_dlg import Ui_Dialog
+from dock import Ui_DockWidget
 from wizards import wizard1
 #from wizard import Ui_Wizard
 
-class eafdialog(QtGui.QDialog):
+#class eafdialog(QtGui.QDialog):
+class eafdialog(QtGui.QDockWidget):    
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self.ui = Ui_Dialog()
+        #self.ui = Ui_Dialog()
+        self.ui = Ui_DockWidget()        
         self.ui.setupUi(self)
         
 

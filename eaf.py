@@ -37,12 +37,14 @@ from pydevd import *
 
 class eaf:
 
+
     def __init__(self, iface):
-        
         #Debug VERSION: REMOVE THIS FOR RELEASE!!! /////////////7
         settrace()        
+        
         # Save reference to the QGIS interface
         self.iface = iface
+
         self.qgsVersion = unicode(QGis.QGIS_VERSION_INT)
 
         # For i18n support
@@ -66,24 +68,28 @@ class eaf:
             self.translator.load(self.localePath)
             QCoreApplication.installTranslator(self.translator)
 
+
     def initGui(self):
         # Create action that will start plugin configuration
-        self.action = QAction(
-            QIcon(":/plugins/eaf/icon.png"),
-            u"EafWiz", self.iface.mainWindow())
-        # connect the action to the run method
-        self.action.triggered.connect(self.run)
+        self.action = QAction(QIcon(":/plugins/eaf/icon.png"),  "eaf", self.iface.mainWindow())           
+        QObject.connect(self.action, SIGNAL("triggered()"), self.showHideDockWidget)
 
         # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu(u"&GISforEAF", self.action)
+        self.iface.addPluginToMenu("&GISforEAF", self.action)
+
+        # dock widget
+        self.dockWidget = eafdialog.eafdialog()
+        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)
 
     def unload(self):
         # Remove the plugin menu item and icon
-        self.iface.removePluginMenu(u"&GISforEAF", self.action)
+        self.iface.removePluginMenu("&GISforEAF",self.action)
         self.iface.removeToolBarIcon(self.action)
 
-    # run method that performs all the real work
-    def run(self):
-        dlg = eafdialog.eafdialog()        
-        dlg.exec_()       
+    def showHideDockWidget(self):
+        if self.dockWidget.isVisible():
+            self.dockWidget.hide()
+        else:
+            self.dockWidget.show()
+            
