@@ -24,27 +24,22 @@ from PyQt4 import QtCore, QtGui
 #from ui_eaf import Ui_eaf
 
 from eaf_dlg import Ui_Dialog
-from wizarddialog import wizarddialog
-# create the dialog for zoom to point
-
+from wizards import wizard1
+#from wizard import Ui_Wizard
 
 class eafdialog(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        # Set up the user interface from Designer.
-        #self.ui = Ui_eaf()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         
-        wiz=wizarddialog()
 
-        layout = QtGui.QVBoxLayout()
+        self.ui.tabWidget.addTab(wizard1(),  "Initiation and Planning")
+        self.ui.tabWidget.addTab(QtGui.QWidget(),  "Definition of Scope")
+        self.ui.tabWidget.addTab(QtGui.QWidget(),  "Identify Issues and Indicators")
+        self.ui.tabWidget.addTab(QtGui.QWidget(),  "Management Measures and Monitoring Systems")
         
-        layout.addWidget(wiz) 
-        #form_widget has its own main_widget where I put all other widgets onto
-
-        self.ui.tabWidget.setLayout(layout)
-
-
-
+        
+     
+        
 

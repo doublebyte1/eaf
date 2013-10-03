@@ -23,16 +23,12 @@
 from PyQt4 import QtCore, QtGui
 #from ui_eaf import Ui_eaf
 
-from wizard import Ui_Wizard
-# create the dialog for zoom to point
+from wizard1 import Ui_Wizard1
 
-
-class wizarddialog(QtGui.QDialog):
+class wizard1(QtGui.QWizard):
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        # Set up the user interface from Designer.
-        #self.ui = Ui_eaf()
-        self.ui = Ui_Wizard()
+        self.ui = Ui_Wizard1()
         self.ui.setupUi(self)
         
 

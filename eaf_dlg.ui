@@ -24,40 +24,8 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>-1</number>
      </property>
-     <widget class="QWidget" name="tab2">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <attribute name="title">
-       <string>Initiation and Planning</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab2">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <attribute name="title">
-       <string>Definition of Scope</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab3">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <attribute name="title">
-       <string>Identify Issues and Indicators</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab4">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <attribute name="title">
-       <string>Management Measures and Monitoring Systems</string>
-      </attribute>
-     </widget>
     </widget>
    </item>
    <item>

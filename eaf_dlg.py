@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'eaf_dlg.ui'
 #
-# Created: Wed Oct  2 15:40:15 2013
+# Created: Thu Oct  3 13:18:00 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,22 +26,6 @@ class Ui_Dialog(object):
         self.tabWidget = QtGui.QTabWidget(Dialog)
         self.tabWidget.setEnabled(True)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.tab2 = QtGui.QWidget()
-        self.tab2.setEnabled(True)
-        self.tab2.setObjectName(_fromUtf8("tab2"))
-        self.tabWidget.addTab(self.tab2, _fromUtf8(""))
-        self.tab21 = QtGui.QWidget()
-        self.tab21.setEnabled(True)
-        self.tab21.setObjectName(_fromUtf8("tab21"))
-        self.tabWidget.addTab(self.tab21, _fromUtf8(""))
-        self.tab3 = QtGui.QWidget()
-        self.tab3.setEnabled(True)
-        self.tab3.setObjectName(_fromUtf8("tab3"))
-        self.tabWidget.addTab(self.tab3, _fromUtf8(""))
-        self.tab4 = QtGui.QWidget()
-        self.tab4.setEnabled(True)
-        self.tab4.setObjectName(_fromUtf8("tab4"))
-        self.tabWidget.addTab(self.tab4, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
@@ -75,15 +59,11 @@ class Ui_Dialog(object):
         self.lbOptions.setBuddy(self.toolOptions)
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab2), QtGui.QApplication.translate("Dialog", "Initiation and Planning", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab21), QtGui.QApplication.translate("Dialog", "Definition of Scope", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab3), QtGui.QApplication.translate("Dialog", "Identify Issues and Indicators", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab4), QtGui.QApplication.translate("Dialog", "Management Measures and Monitoring Systems", None, QtGui.QApplication.UnicodeUTF8))
         self.pushOpen.setText(QtGui.QApplication.translate("Dialog", "&Open Project", None, QtGui.QApplication.UnicodeUTF8))
         self.pushSave.setText(QtGui.QApplication.translate("Dialog", "&Save Project", None, QtGui.QApplication.UnicodeUTF8))
         self.pushClose.setText(QtGui.QApplication.translate("Dialog", "&Close Project", None, QtGui.QApplication.UnicodeUTF8))
