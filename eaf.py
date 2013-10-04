@@ -34,9 +34,10 @@ sys.path.append('/home/joana/.eclipse/org.eclipse.platform_3.8_155965261/plugins
 from pydevd import *
 
 
+basepath = os.path.dirname(__file__)
+datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
 class eaf:
-
 
     def __init__(self, iface):
         #Debug VERSION: REMOVE THIS FOR RELEASE!!! /////////////7
@@ -80,16 +81,39 @@ class eaf:
 
         # dock widget
         self.dockWidget = eafdialog.eafdialog()
-        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)
+        #self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)
+
+        #self.LoadBaseData()
+        
 
     def unload(self):
         # Remove the plugin menu item and icon
         self.iface.removePluginMenu("&GISforEAF",self.action)
         self.iface.removeToolBarIcon(self.action)
 
+
     def showHideDockWidget(self):
         if self.dockWidget.isVisible():
             self.dockWidget.hide()
+            self.unloadBaseData()
         else:
+            self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)            
             self.dockWidget.show()
+            self.LoadBaseData()
             
+
+    def LoadBaseData(self):
+        
+        rlayer = QgsRasterLayer(os.path.join(datapath, "africa_background.tif"), "africa_background")
+        if not rlayer.isValid():
+            print "Layer failed to load!"
+                          
+        self.canvas = self.iface.mapCanvas()  
+        QgsMapLayerRegistry.instance().addMapLayer(rlayer)
+
+    def unloadBaseData(self):
+        
+        #TODO: grabb the ID correctly
+        layerID = self.iface.mapCanvas().currentLayer().id()  
+        QgsMapLayerRegistry.instance().removeMapLayer(layerID)
+

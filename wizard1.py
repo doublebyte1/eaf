@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'wizard1.ui'
 #
-# Created: Thu Oct  3 13:18:01 2013
+# Created: Thu Oct  3 17:51:21 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,8 +17,9 @@ except AttributeError:
 class Ui_Wizard1(object):
     def setupUi(self, Wizard1):
         Wizard1.setObjectName(_fromUtf8("Wizard1"))
-        Wizard1.resize(400, 300)
+        Wizard1.resize(400, 362)
         Wizard1.setWizardStyle(QtGui.QWizard.ClassicStyle)
+        Wizard1.setOptions(QtGui.QWizard.NoCancelButton)
         self.wizardPage1 = page1dialog()
         self.wizardPage1.setObjectName(_fromUtf8("wizardPage1"))
         Wizard1.addPage(self.wizardPage1)

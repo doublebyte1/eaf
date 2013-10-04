@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>362</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,9 @@
   </property>
   <property name="wizardStyle">
    <enum>QWizard::ClassicStyle</enum>
+  </property>
+  <property name="options">
+   <set>QWizard::NoCancelButton</set>
   </property>
   <widget class="page1dialog" name="wizardPage1"/>
   <widget class="page2dialog" name="wizardPage2"/>

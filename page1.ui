@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -53,6 +53,14 @@
          </item>
          <item>
           <widget class="QComboBox" name="cmbMethod">
+           <property name="modelColumn">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Please Choose one...</string>
+            </property>
+           </item>
            <item>
             <property name="text">
              <string>Free-hand interactive</string>
@@ -95,6 +103,11 @@
            </property>
            <item>
             <property name="text">
+             <string>Please choose one...</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>Import</string>
             </property>
            </item>
@@ -126,6 +139,11 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
+           <item>
+            <property name="text">
+             <string>Please choose one...</string>
+            </property>
+           </item>
            <item>
             <property name="text">
              <string>Import</string>
@@ -161,6 +179,11 @@
            </property>
            <item>
             <property name="text">
+             <string>Please choose one...</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>Import</string>
             </property>
            </item>
@@ -194,6 +217,11 @@
            </property>
            <item>
             <property name="text">
+             <string>Please choose one...</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>Import</string>
             </property>
            </item>
@@ -225,6 +253,11 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
+           <item>
+            <property name="text">
+             <string>Please choose one...</string>
+            </property>
+           </item>
            <item>
             <property name="text">
              <string>Import</string>
@@ -275,6 +308,11 @@
        </item>
        <item>
         <widget class="QComboBox" name="cmbMethod2">
+         <item>
+          <property name="text">
+           <string>Please choose one...</string>
+          </property>
+         </item>
          <item>
           <property name="text">
            <string>Free-hand interactive</string>
