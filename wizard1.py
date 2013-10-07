@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'wizard1.ui'
 #
-# Created: Thu Oct  3 17:51:21 2013
+# Created: Mon Oct  7 12:44:43 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,13 +19,19 @@ class Ui_Wizard1(object):
         Wizard1.setObjectName(_fromUtf8("Wizard1"))
         Wizard1.resize(400, 362)
         Wizard1.setWizardStyle(QtGui.QWizard.ClassicStyle)
-        Wizard1.setOptions(QtGui.QWizard.NoCancelButton)
+        Wizard1.setOptions(QtGui.QWizard.HaveHelpButton|QtGui.QWizard.NoCancelButton)
+        self.wizardPage0 = page0dialog()
+        self.wizardPage0.setObjectName(_fromUtf8("wizardPage0"))
+        Wizard1.addPage(self.wizardPage0)
         self.wizardPage1 = page1dialog()
         self.wizardPage1.setObjectName(_fromUtf8("wizardPage1"))
         Wizard1.addPage(self.wizardPage1)
         self.wizardPage2 = page2dialog()
         self.wizardPage2.setObjectName(_fromUtf8("wizardPage2"))
         Wizard1.addPage(self.wizardPage2)
+        self.wizardPage3 = page3dialog()
+        self.wizardPage3.setObjectName(_fromUtf8("wizardPage3"))
+        Wizard1.addPage(self.wizardPage3)
 
         self.retranslateUi(Wizard1)
         QtCore.QMetaObject.connectSlotsByName(Wizard1)
@@ -33,4 +39,4 @@ class Ui_Wizard1(object):
     def retranslateUi(self, Wizard1):
         Wizard1.setWindowTitle(QtGui.QApplication.translate("Wizard1", "Wizard", None, QtGui.QApplication.UnicodeUTF8))
 
-from pages import page1dialog, page2dialog
+from pages import page1dialog, page3dialog, page0dialog, page2dialog

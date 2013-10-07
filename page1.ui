@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -334,6 +334,13 @@
      </widget>
     </widget>
    </item>
+   <item>
+    <widget class="QCheckBox" name="checkComplete">
+     <property name="text">
+      <string>Complete</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
@@ -397,8 +404,8 @@
      <y>211</y>
     </hint>
     <hint type="destinationlabel">
-     <x>275</x>
-     <y>210</y>
+     <x>274</x>
+     <y>193</y>
     </hint>
    </hints>
   </connection>
@@ -419,4 +426,7 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>setComplete(bool)</slot>
+ </slots>
 </ui>

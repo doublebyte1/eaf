@@ -35,7 +35,7 @@ PY_FILES = eaf.py eafdialog.py __init__.py
 
 EXTRAS = icon.png metadata.txt
 
-UI_FILES = ui_eaf.py eaf_dlg.py wizard1.py page1.py page2.py dock.py
+UI_FILES = ui_eaf.py eaf_dlg.py wizard1.py page0.py page1.py page2.py page3.py dock.py frmintro.py
 
 RESOURCE_FILES = resources_rc.py
 

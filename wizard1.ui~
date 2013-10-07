@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>362</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,23 +16,40 @@
   <property name="wizardStyle">
    <enum>QWizard::ClassicStyle</enum>
   </property>
-  <widget class="Page1" name="wizardPage1"/>
-  <widget class="Page2" name="wizardPage2"/>
+  <property name="options">
+   <set>QWizard::NoCancelButton</set>
+  </property>
+  <widget class="page0dialog" name="wizardPage0"/>
+  <widget class="page1dialog" name="wizardPage1"/>
+  <widget class="page2dialog" name="wizardPage2"/>
+  <widget class="page3dialog" name="wizardPage3"/>  
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Page1</class>
+   <class>page0dialog</class>
    <extends>QWizardPage</extends>
    <header>pages.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Page2</class>
+   <class>page1dialog</class>
    <extends>QWizardPage</extends>
    <header>pages.h</header>
    <container>1</container>
   </customwidget>
- </customwidgets>
+  <customwidget>
+   <class>page2dialog</class>
+   <extends>QWizardPage</extends>
+   <header>pages.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>page3dialog</class>
+   <extends>QWizardPage</extends>
+   <header>pages.h</header>
+   <container>1</container>
+  </customwidget>
+  </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -117,3 +117,5 @@ class eaf:
         layerID = self.iface.mapCanvas().currentLayer().id()  
         QgsMapLayerRegistry.instance().removeMapLayer(layerID)
 
+
+

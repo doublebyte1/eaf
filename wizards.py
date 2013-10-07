@@ -21,9 +21,12 @@
 """
 
 from PyQt4 import QtCore, QtGui
-#from ui_eaf import Ui_eaf
-
 from wizard1 import Ui_Wizard1
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
 
 class wizard1(QtGui.QWizard):
     def __init__(self):
@@ -31,4 +34,6 @@ class wizard1(QtGui.QWizard):
         self.ui = Ui_Wizard1()
         self.ui.setupUi(self)
         
-
+    def reset(self):
+        self.ui.wizardPage1.ui.checkComplete.setChecked(False)
+        self.ui.wizardPage2.ui.checkComplete.setChecked(False)       

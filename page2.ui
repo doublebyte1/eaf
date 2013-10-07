@@ -153,6 +153,13 @@
      </widget>
     </widget>
    </item>
+   <item>
+    <widget class="QCheckBox" name="checkComplete">
+     <property name="text">
+      <string>Complete</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

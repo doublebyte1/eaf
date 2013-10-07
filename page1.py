@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page1.ui'
 #
-# Created: Fri Oct  4 12:26:54 2013
+# Created: Mon Oct  7 10:15:17 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -146,11 +146,14 @@ class Ui_Page1(object):
         self.horizontalLayout_8.addWidget(self.cmbMethod2)
         self.tabWidget.addTab(self.tab11, _fromUtf8(""))
         self.verticalLayout_2.addWidget(self.tabWidget)
+        self.checkComplete = QtGui.QCheckBox(Page1)
+        self.checkComplete.setObjectName(_fromUtf8("checkComplete"))
+        self.verticalLayout_2.addWidget(self.checkComplete)
         self.lbMethod.setBuddy(self.cmbMethod)
         self.lbMethod2.setBuddy(self.cmbMethod)
 
         self.retranslateUi(Page1)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.checkCoastline, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cmbCoastline.setEnabled)
         QtCore.QObject.connect(self.checkBathymetry, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cmbBathymetry.setEnabled)
         QtCore.QObject.connect(self.checkLandingSites, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cmbLandingSites.setEnabled)
@@ -199,4 +202,5 @@ class Ui_Page1(object):
         self.cmbMethod2.setItemText(2, QtGui.QApplication.translate("Page1", "From list of countries/regions", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbMethod2.setItemText(3, QtGui.QApplication.translate("Page1", "From list of water areas", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab11), QtGui.QApplication.translate("Page1", "Refine the AoI", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkComplete.setText(QtGui.QApplication.translate("Page1", "Complete", None, QtGui.QApplication.UnicodeUTF8))
 

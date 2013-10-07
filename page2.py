@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page2.ui'
 #
-# Created: Thu Oct  3 14:45:11 2013
+# Created: Mon Oct  7 10:42:29 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -85,6 +85,9 @@ class Ui_Page2(object):
         self.tab2.setObjectName(_fromUtf8("tab2"))
         self.tabWidget.addTab(self.tab2, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
+        self.checkComplete = QtGui.QCheckBox(Page2)
+        self.checkComplete.setObjectName(_fromUtf8("checkComplete"))
+        self.verticalLayout.addWidget(self.checkComplete)
 
         self.retranslateUi(Page2)
         self.tabWidget.setCurrentIndex(0)
@@ -110,4 +113,5 @@ class Ui_Page2(object):
         self.cmbFishingAreas.setItemText(2, QtGui.QApplication.translate("Page2", "Rule-based", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab1), QtGui.QApplication.translate("Page2", "Participatory GIS Approach", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab2), QtGui.QApplication.translate("Page2", "Expert Based Approach", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkComplete.setText(QtGui.QApplication.translate("Page2", "Complete", None, QtGui.QApplication.UnicodeUTF8))
 

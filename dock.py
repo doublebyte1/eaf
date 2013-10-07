@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dock.ui'
 #
-# Created: Thu Oct  3 17:41:00 2013
+# Created: Mon Oct  7 09:31:44 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,15 +28,15 @@ class Ui_DockWidget(object):
         self.verticalLayout.addWidget(self.tabWidget)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.pushNew = QtGui.QPushButton(self.dockWidgetContents)
+        self.pushNew.setObjectName(_fromUtf8("pushNew"))
+        self.horizontalLayout.addWidget(self.pushNew)
         self.pushOpen = QtGui.QPushButton(self.dockWidgetContents)
         self.pushOpen.setObjectName(_fromUtf8("pushOpen"))
         self.horizontalLayout.addWidget(self.pushOpen)
         self.pushSave = QtGui.QPushButton(self.dockWidgetContents)
         self.pushSave.setObjectName(_fromUtf8("pushSave"))
         self.horizontalLayout.addWidget(self.pushSave)
-        self.pushClose = QtGui.QPushButton(self.dockWidgetContents)
-        self.pushClose.setObjectName(_fromUtf8("pushClose"))
-        self.horizontalLayout.addWidget(self.pushClose)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.pushDoc = QtGui.QPushButton(self.dockWidgetContents)
@@ -52,7 +52,7 @@ class Ui_DockWidget(object):
         self.horizontalLayout.addWidget(self.toolOptions)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.progressBar = QtGui.QProgressBar(self.dockWidgetContents)
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.verticalLayout.addWidget(self.progressBar)
         DockWidget.setWidget(self.dockWidgetContents)
@@ -60,13 +60,16 @@ class Ui_DockWidget(object):
 
         self.retranslateUi(DockWidget)
         self.tabWidget.setCurrentIndex(-1)
+        QtCore.QObject.connect(self.pushNew, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.newProject)
+        QtCore.QObject.connect(self.pushOpen, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.openProject)
+        QtCore.QObject.connect(self.pushSave, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.saveProject)
         QtCore.QMetaObject.connectSlotsByName(DockWidget)
 
     def retranslateUi(self, DockWidget):
         DockWidget.setWindowTitle(QtGui.QApplication.translate("DockWidget", "EAF Wizard", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushNew.setText(QtGui.QApplication.translate("DockWidget", "&New Project", None, QtGui.QApplication.UnicodeUTF8))
         self.pushOpen.setText(QtGui.QApplication.translate("DockWidget", "&Open Project", None, QtGui.QApplication.UnicodeUTF8))
         self.pushSave.setText(QtGui.QApplication.translate("DockWidget", "&Save Project", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushClose.setText(QtGui.QApplication.translate("DockWidget", "&Close Project", None, QtGui.QApplication.UnicodeUTF8))
         self.pushDoc.setText(QtGui.QApplication.translate("DockWidget", "&EAF Documentation", None, QtGui.QApplication.UnicodeUTF8))
         self.lbOptions.setText(QtGui.QApplication.translate("DockWidget", "Options", None, QtGui.QApplication.UnicodeUTF8))
         self.toolOptions.setText(QtGui.QApplication.translate("DockWidget", "...", None, QtGui.QApplication.UnicodeUTF8))

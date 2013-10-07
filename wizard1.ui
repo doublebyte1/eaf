@@ -17,12 +17,20 @@
    <enum>QWizard::ClassicStyle</enum>
   </property>
   <property name="options">
-   <set>QWizard::NoCancelButton</set>
+   <set>QWizard::HaveHelpButton|QWizard::NoCancelButton</set>
   </property>
+  <widget class="page0dialog" name="wizardPage0"/>
   <widget class="page1dialog" name="wizardPage1"/>
   <widget class="page2dialog" name="wizardPage2"/>
+  <widget class="page3dialog" name="wizardPage3"/>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>page0dialog</class>
+   <extends>QWizardPage</extends>
+   <header>pages.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>page1dialog</class>
    <extends>QWizardPage</extends>
@@ -35,7 +43,16 @@
    <header>pages.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>page3dialog</class>
+   <extends>QWizardPage</extends>
+   <header>pages.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
+ <slots>
+  <slot>test()</slot>
+ </slots>
 </ui>
