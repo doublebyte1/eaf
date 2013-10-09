@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page1.ui'
 #
-# Created: Mon Oct  7 10:15:17 2013
+# Created: Wed Oct  9 09:10:02 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -159,6 +159,7 @@ class Ui_Page1(object):
         QtCore.QObject.connect(self.checkLandingSites, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cmbLandingSites.setEnabled)
         QtCore.QObject.connect(self.CheckMaritime, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cmbMaritime.setEnabled)
         QtCore.QObject.connect(self.checkOther, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cmbOther.setEnabled)
+        QtCore.QObject.connect(self.cmbMethod, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), Page1.triggerMethod)
         QtCore.QMetaObject.connectSlotsByName(Page1)
 
     def retranslateUi(self, Page1):

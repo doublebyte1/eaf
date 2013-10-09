@@ -425,8 +425,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmbMethod</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Page1</receiver>
+   <slot>triggerMethod(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>247</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>setComplete(bool)</slot>
+  <slot>triggerMethod(int)</slot>
  </slots>
 </ui>

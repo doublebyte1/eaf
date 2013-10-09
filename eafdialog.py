@@ -21,12 +21,16 @@
 """
 
 from PyQt4 import QtCore, QtGui
-#from ui_eaf import Ui_eaf
+
+from qgis.core import *
+from qgis.gui import *
 
 from eaf_dlg import Ui_Dialog
 from dock import Ui_DockWidget
 from wizards import wizard1
 from frmintro import Ui_frmIntro
+
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -40,17 +44,18 @@ class frmIntro(QtGui.QWidget):
         self.ui.setupUi(self)   
 
 #class eafdialog(QtGui.QDialog):
-class eafdialog(QtGui.QDockWidget):    
+class eafdialog(QtGui.QDockWidget, Ui_Dialog):    
 
-    def __init__(self):
+    def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
         #self.ui = Ui_Dialog()
+        
         self.ui = Ui_DockWidget()        
         self.ui.setupUi(self)
         
         self.ui.tabWidget.addTab(frmIntro(),  "Welcome")
 
-        self.ui.wiz1=wizard1()        
+        self.ui.wiz1=wizard1(eaf)        
         #self.wiz1_count=sum(self.ui.wiz1.pageIds())
             
         QtCore.QObject.connect(self.ui.wiz1, QtCore.SIGNAL(_fromUtf8("finished(int)")), self.nextTab)        

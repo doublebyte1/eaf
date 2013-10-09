@@ -71,19 +71,11 @@ class eaf:
 
 
     def initGui(self):
-        # Create action that will start plugin configuration
         self.action = QAction(QIcon(":/plugins/eaf/icon.png"),  "eaf", self.iface.mainWindow())           
         QObject.connect(self.action, SIGNAL("triggered()"), self.showHideDockWidget)
-
-        # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu("&GISforEAF", self.action)
-
-        # dock widget
-        self.dockWidget = eafdialog.eafdialog()
-        #self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)
-
-        #self.LoadBaseData()
+        self.dockWidget = eafdialog.eafdialog(self)
         
 
     def unload(self):
@@ -102,20 +94,21 @@ class eaf:
             self.LoadBaseData()
             
 
-    def LoadBaseData(self):
-        
+    def LoadBaseData(self):        
         rlayer = QgsRasterLayer(os.path.join(datapath, "africa_background.tif"), "africa_background")
-        if not rlayer.isValid():
+        vlayer = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), "world", "ogr")
+        
+        if not vlayer.isValid():
             print "Layer failed to load!"
                           
         self.canvas = self.iface.mapCanvas()  
-        QgsMapLayerRegistry.instance().addMapLayer(rlayer)
+        QgsMapLayerRegistry.instance().addMapLayer(vlayer)
 
-    def unloadBaseData(self):
-        
-        #TODO: grabb the ID correctly
+    def unloadBaseData(self):        
         layerID = self.iface.mapCanvas().currentLayer().id()  
         QgsMapLayerRegistry.instance().removeMapLayer(layerID)
+
+        
 
 
 

@@ -22,17 +22,20 @@
 
 from PyQt4 import QtCore, QtGui
 from wizard1 import Ui_Wizard1
+from eaf_dlg import Ui_Dialog
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class wizard1(QtGui.QWizard):
-    def __init__(self):
+class wizard1(QtGui.QWizard,Ui_Dialog):
+    def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Wizard1()
         self.ui.setupUi(self)
+        
+        self.ui.wizardPage1.iface=eaf.iface
         
     def reset(self):
         self.ui.wizardPage1.ui.checkComplete.setChecked(False)
