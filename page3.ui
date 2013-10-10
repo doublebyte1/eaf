@@ -14,21 +14,76 @@
    <string>WizardPage</string>
   </property>
   <property name="title">
+   <string>Initiation and Planning</string>
+  </property>
+  <property name="subTitle">
    <string>Conclusion</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Congratulations: This step is complete!&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Please press &amp;quot;finished&amp;quot; to proceed to the next step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Refine the AoI:</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="lbMethod2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>&amp;Select a Method</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="buddy">
+        <cstring>cmbMethod2</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbMethod2">
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Free-hand interactive</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>From list of countries/regions</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>From list of water areas</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

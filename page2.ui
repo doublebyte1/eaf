@@ -7,210 +7,223 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
   <property name="title">
+   <string>Initiation and Planning</string>
+  </property>
+  <property name="subTitle">
    <string>Stakeholder Analysis and Engagement Step</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
-      <number>0</number>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Compilation of Base Data:</string>
      </property>
-     <widget class="QWidget" name="tab1">
-      <attribute name="title">
-       <string>Participatory GIS Approach</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QCheckBox" name="checkLandingSites">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Landing Sites</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cmbLandingSites">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>Free-hand interactive</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>By grid-cell</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Rule-based</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QCheckBox" name="checkBathymetry">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Bathymetry</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cmbBathymetry">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>Free-hand interactive</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>By grid-cell</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Rule-based</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QCheckBox" name="checkFishingAreas">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Fishing Areas</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cmbFishingAreas">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>Free-hand interactive</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>By grid-cell</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Rule-based</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab2">
-      <attribute name="title">
-       <string>Expert Based Approach</string>
-      </attribute>
-     </widget>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkComplete">
-     <property name="text">
-      <string>Complete</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QCheckBox" name="CheckMaritime">
+       <property name="text">
+        <string>Maritime Boundaries</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbMaritime">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Digitize</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Get from plugin/web repositories</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QCheckBox" name="checkCoastline">
+       <property name="text">
+        <string>Coastline</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbCoastline">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Digitize</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Get from plugin/web repositories</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QCheckBox" name="checkLandingSites">
+       <property name="text">
+        <string>Landing Sites</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbLandingSites">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Digitize</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Get from plugin/web repositories</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QCheckBox" name="checkOther">
+       <property name="text">
+        <string>Other</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbOther">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Digitize</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Get from plugin/web repositories</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QCheckBox" name="checkBathymetry">
+       <property name="text">
+        <string>Bathymetry</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbBathymetry">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Digitize</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Get from plugin/web repositories</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections>
-  <connection>
-   <sender>checkLandingSites</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>cmbLandingSites</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>62</x>
-     <y>73</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>251</x>
-     <y>73</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBathymetry</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>cmbBathymetry</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>57</x>
-     <y>159</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>246</x>
-     <y>159</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkFishingAreas</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>cmbFishingAreas</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>62</x>
-     <y>245</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>251</x>
-     <y>245</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
 </ui>

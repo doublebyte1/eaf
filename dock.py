@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dock.ui'
 #
-# Created: Mon Oct  7 09:31:44 2013
+# Created: Thu Oct 10 10:54:29 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -22,10 +22,6 @@ class Ui_DockWidget(object):
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
         self.verticalLayout = QtGui.QVBoxLayout(self.dockWidgetContents)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.tabWidget = QtGui.QTabWidget(self.dockWidgetContents)
-        self.tabWidget.setEnabled(True)
-        self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.verticalLayout.addWidget(self.tabWidget)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.pushNew = QtGui.QPushButton(self.dockWidgetContents)
@@ -59,7 +55,6 @@ class Ui_DockWidget(object):
         self.lbOptions.setBuddy(self.toolOptions)
 
         self.retranslateUi(DockWidget)
-        self.tabWidget.setCurrentIndex(-1)
         QtCore.QObject.connect(self.pushNew, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.newProject)
         QtCore.QObject.connect(self.pushOpen, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.openProject)
         QtCore.QObject.connect(self.pushSave, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.saveProject)

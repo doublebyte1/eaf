@@ -6,6 +6,10 @@ from page0 import Ui_Page0
 from page1 import Ui_Page1
 from page2 import Ui_Page2
 from page3 import Ui_Page3
+from page4 import Ui_Page4
+from page5 import Ui_Page5
+from page6 import Ui_Page6
+from page7 import Ui_Page7
 
 from qgis.core import *
 from qgis.gui import *
@@ -19,6 +23,7 @@ except AttributeError:
 
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
+
 
 class page0dialog(QtGui.QWizardPage):
     def __init__(self):
@@ -34,13 +39,7 @@ class page1dialog(QtGui.QWizardPage):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1()
         self.ui.setupUi(self)
-        
-        QtCore.QObject.connect(self.ui.checkComplete, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.isComplete)
-        QtCore.QObject.connect(self.ui.checkComplete, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.completeChanged)
-        
-    def isComplete(self):
-        return self.ui.checkComplete.isChecked()
-    
+            
     def triggerMethod(self,index):
         if index==1:
             
@@ -85,17 +84,34 @@ class page2dialog(QtGui.QWizardPage):
         self.ui = Ui_Page2()
         self.ui.setupUi(self)
                 
-        QtCore.QObject.connect(self.ui.checkComplete, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.isComplete)
-        QtCore.QObject.connect(self.ui.checkComplete, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.completeChanged)
-        
-    def isComplete(self):
-        return self.ui.checkComplete.isChecked()
-
 class page3dialog(QtGui.QWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page3()
         self.ui.setupUi(self)
-        
-        self.setPixmap(QtGui.QWizard.WatermarkPixmap, QtGui.QPixmap(":/plugins/eaf/eaf3.jpg"))
+         
+class page4dialog(QtGui.QWizardPage):
+    def __init__(self):
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_Page4()
+        self.ui.setupUi(self)
+
+class page5dialog(QtGui.QWizardPage):
+    def __init__(self):
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_Page5()
+        self.ui.setupUi(self)
  
+class page6dialog(QtGui.QWizardPage):
+    def __init__(self):
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_Page6()
+        self.ui.setupUi(self)
+
+        self.setPixmap(QtGui.QWizard.WatermarkPixmap, QtGui.QPixmap(":/plugins/eaf/eaf3.jpg"))
+        
+class page7dialog(QtGui.QWizardPage):
+    def __init__(self):
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_Page7()
+        self.ui.setupUi(self)

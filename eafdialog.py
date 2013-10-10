@@ -25,61 +25,42 @@ from PyQt4 import QtCore, QtGui
 from qgis.core import *
 from qgis.gui import *
 
-from eaf_dlg import Ui_Dialog
 from dock import Ui_DockWidget
-from wizards import wizard1
-from frmintro import Ui_frmIntro
-
-
+from wizard import Ui_Wizard
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class frmIntro(QtGui.QWidget):
+class wiz(QtGui.QWizard):
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self.ui = Ui_frmIntro()
-        self.ui.setupUi(self)   
+        self.ui = Ui_Wizard()
+        self.ui.setupUi(self)
+        
+        #self.setPixmap(QtGui.QWizard.LogoPixmap, QtGui.QPixmap(":/plugins/eaf/eaf1.jpg"))
 
-#class eafdialog(QtGui.QDialog):
-class eafdialog(QtGui.QDockWidget, Ui_Dialog):    
+    
+class eafdialog(QtGui.QDockWidget):    
 
     def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
-        #self.ui = Ui_Dialog()
         
         self.ui = Ui_DockWidget()        
-        self.ui.setupUi(self)
+        self.ui.setupUi(self)        
+        self.mywiz=wiz()
         
-        self.ui.tabWidget.addTab(frmIntro(),  "Welcome")
-
-        self.ui.wiz1=wizard1(eaf)        
-        #self.wiz1_count=sum(self.ui.wiz1.pageIds())
-            
-        QtCore.QObject.connect(self.ui.wiz1, QtCore.SIGNAL(_fromUtf8("finished(int)")), self.nextTab)        
-        QtCore.QObject.connect(self.ui.wiz1, QtCore.SIGNAL(_fromUtf8("currentIdChanged(int)")), self.updateProgress)
-
-    def removeAllTabs(self):
-        i= self.ui.tabWidget.count()-1
-        while i >= 0:
-            self.ui.tabWidget.removeTab(i)
-            i=i-1
+        self.ui.verticalLayout.insertWidget(0,self.mywiz)
+                
+        QtCore.QObject.connect(self.mywiz, QtCore.SIGNAL(_fromUtf8("currentIdChanged(int)")), self.updateProgress)
      
     def newProject(self):
 
-        self.removeAllTabs()
-        self.ui.wiz1.restart()
-        self.ui.wiz1.reset()
-                            
-        self.ui.tabWidget.addTab(self.ui.wiz1,  "Initiation and Planning")
-        self.ui.tabWidget.addTab(QtGui.QWidget(),  "Definition of Scope")
-        self.ui.tabWidget.addTab(QtGui.QWidget(),  "Identify Issues and Indicators")
-        self.ui.tabWidget.addTab(QtGui.QWidget(),  "Management Measures and Monitoring Systems")
-                        
-        self.ui.tabWidget.setCurrentIndex(0)
-        self.ui.progressBar.setValue(0)        
+        if not self.mywiz.isVisible():
+            self.mywiz.setVisible(True)
+            
+        self.mywiz.restart()
         
     def openProject(self):
         print "open project"
@@ -87,18 +68,11 @@ class eafdialog(QtGui.QDockWidget, Ui_Dialog):
     def saveProject(self):
         print "save project"        
 
-    def nextTab(self):
-        self.ui.tabWidget.setCurrentIndex(self.ui.tabWidget.currentIndex()+1)      
-        self.ui.progressBar.setValue(100/self.ui.tabWidget.count()*self.ui.tabWidget.currentIndex())          
-
     def updateProgress(self,index):
         if isinstance(self.sender(), QtGui.QWizard):
             wizard = self.sender()
-            if wizard.currentId()>0:
-                self.ui.progressBar.setValue(100/self.ui.tabWidget.count()*self.ui.tabWidget.currentIndex()+
-                                             (100/self.ui.tabWidget.count()*wizard.currentId()/sum(wizard.pageIds())))
-            else:
-                self.ui.progressBar.setValue(0)
-            #print sum(wizard.pageIds())
+            cnt=len(wizard.pageIds())
+            val=(wizard.currentId()+1)*100/cnt
+            self.ui.progressBar.setValue(val)
             
         
