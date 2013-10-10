@@ -29,9 +29,9 @@ import resources_rc
 # Import the code for the dialog
 import eafdialog
 
-#sys.path.append('/home/joana/.eclipse/org.eclipse.platform_3.8_155965261/plugins/org.python.pydev_2.8.2.2013090511/pysrc')
+sys.path.append('/home/joana/.eclipse/org.eclipse.platform_3.8_155965261/plugins/org.python.pydev_2.8.2.2013090511/pysrc')
 
-#from pydevd import *
+from pydevd import *
 
 
 basepath = os.path.dirname(__file__)
@@ -41,7 +41,7 @@ class eaf:
 
     def __init__(self, iface):
         #Debug VERSION: REMOVE THIS FOR RELEASE!!! /////////////7
-        #settrace()        
+        settrace()        
         
         # Save reference to the QGIS interface
         self.iface = iface
@@ -95,18 +95,44 @@ class eaf:
             
 
     def LoadBaseData(self):        
-        rlayer = QgsRasterLayer(os.path.join(datapath, "africa_background.tif"), "africa_background")
-        vlayer = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), "world", "ogr")
+        #rlayer = QgsRasterLayer(os.path.join(datapath, "africa_background.tif"), "africa_background")
+        #vlayer = QgsVectorLayer(os.path.join(datapath, "eaf.db"), "world", "ogr")
         
-        if not vlayer.isValid():
+        uri = QgsDataSourceURI()
+        uri.setDatabase(os.path.join(datapath, "eaf.db"))
+        
+        uri.setDataSource('','WPI', 'Geometry')
+        wpi = QgsVectorLayer(uri.uri(), 'World Ports', 'spatialite') 
+        
+        if not wpi.isValid():
             print "Layer failed to load!"
-                          
-        self.canvas = self.iface.mapCanvas()  
-        QgsMapLayerRegistry.instance().addMapLayer(vlayer)
 
+        uri.setDataSource('','World_EEZ_LR_v7_2012', 'Geometry')
+        eez = QgsVectorLayer(uri.uri(), 'EEZ', 'spatialite') 
+
+        if not eez.isValid():
+            print "Layer failed to load!"
+
+        uri.setDataSource('','g0000_0', 'Geometry')
+        world = QgsVectorLayer(uri.uri(), 'World Countries', 'spatialite') 
+
+        if not world.isValid():
+            print "Layer failed to load!"
+
+        self.wpi=wpi
+        self.eez=eez
+        self.world=world
+                                  
+        self.canvas = self.iface.mapCanvas()  
+        QgsMapLayerRegistry.instance().addMapLayer(eez)
+        QgsMapLayerRegistry.instance().addMapLayer(wpi)
+        QgsMapLayerRegistry.instance().addMapLayer(world)
+        
     def unloadBaseData(self):        
-        layerID = self.iface.mapCanvas().currentLayer().id()  
-        QgsMapLayerRegistry.instance().removeMapLayer(layerID)
+        #layerID = self.iface.mapCanvas().currentLayer().id()  
+        QgsMapLayerRegistry.instance().removeMapLayer(self.wpi.id())
+        QgsMapLayerRegistry.instance().removeMapLayer(self.eez.id())
+        QgsMapLayerRegistry.instance().removeMapLayer(self.world.id())
 
         
 
