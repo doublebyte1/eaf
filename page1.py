@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page1.ui'
 #
-# Created: Thu Oct 10 11:50:01 2013
+# Created: Fri Oct 11 10:33:00 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,6 +48,7 @@ class Ui_Page1(object):
         self.lbMethod.setBuddy(self.cmbMethod)
 
         self.retranslateUi(Page1)
+        QtCore.QObject.connect(self.cmbMethod, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), Page1.setPageId)
         QtCore.QMetaObject.connectSlotsByName(Page1)
 
     def retranslateUi(self, Page1):

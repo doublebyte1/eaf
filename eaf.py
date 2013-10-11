@@ -87,34 +87,34 @@ class eaf:
     def showHideDockWidget(self):
         if self.dockWidget.isVisible():
             self.dockWidget.hide()
-            self.unloadBaseData()
+            #self.unloadBaseData()
+            #self.dockWidget.mywiz.restart()
         else:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)            
             self.dockWidget.show()
-            self.LoadBaseData()
+            #self.LoadBaseData()
             
 
     def LoadBaseData(self):        
-        #rlayer = QgsRasterLayer(os.path.join(datapath, "africa_background.tif"), "africa_background")
-        #vlayer = QgsVectorLayer(os.path.join(datapath, "eaf.db"), "world", "ogr")
+        #rlayer = QgsRasterLayer(os.path.join(datapath, "africa_background.tif"), "africa_background")        
         
-        uri = QgsDataSourceURI()
-        uri.setDatabase(os.path.join(datapath, "eaf.db"))
+        #uri = QgsDataSourceURI()
+        #uri.setDatabase(os.path.join(datapath, "WPI.shp"))
         
-        uri.setDataSource('','WPI', 'Geometry')
-        wpi = QgsVectorLayer(uri.uri(), 'World Ports', 'spatialite') 
+        #uri.setDataSource('','WPI', 'Geometry')
+        #wpi = QgsVectorLayer(uri.uri(), 'World Ports', 'spatialite') 
+        
+        wpi = QgsVectorLayer(os.path.join(datapath, "WPI.shp"), "World Ports", "ogr")
         
         if not wpi.isValid():
             print "Layer failed to load!"
 
-        uri.setDataSource('','World_EEZ_LR_v7_2012', 'Geometry')
-        eez = QgsVectorLayer(uri.uri(), 'EEZ', 'spatialite') 
-
+        eez = QgsVectorLayer(os.path.join(datapath, "World_EEZ_LR_v7_2012.shp"), "EEZ", "ogr")
+        
         if not eez.isValid():
             print "Layer failed to load!"
 
-        uri.setDataSource('','g0000_0', 'Geometry')
-        world = QgsVectorLayer(uri.uri(), 'World Countries', 'spatialite') 
+        world = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), "World Countries", "ogr")
 
         if not world.isValid():
             print "Layer failed to load!"
@@ -124,9 +124,9 @@ class eaf:
         self.world=world
                                   
         self.canvas = self.iface.mapCanvas()  
+        QgsMapLayerRegistry.instance().addMapLayer(world)
         QgsMapLayerRegistry.instance().addMapLayer(eez)
         QgsMapLayerRegistry.instance().addMapLayer(wpi)
-        QgsMapLayerRegistry.instance().addMapLayer(world)
         
     def unloadBaseData(self):        
         #layerID = self.iface.mapCanvas().currentLayer().id()  
@@ -134,6 +134,8 @@ class eaf:
         QgsMapLayerRegistry.instance().removeMapLayer(self.eez.id())
         QgsMapLayerRegistry.instance().removeMapLayer(self.world.id())
 
+        for i in range(len(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon"))):
+            QgsMapLayerRegistry.instance().removeMapLayer(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon")[i].id())
         
 
 

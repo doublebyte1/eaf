@@ -16,6 +16,9 @@
   <property name="title">
    <string>Introduction</string>
   </property>
+  <attribute name="pageId">
+   <string notr="true">0</string>
+  </attribute>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">

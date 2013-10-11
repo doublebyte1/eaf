@@ -27,11 +27,14 @@
   </property>
   <widget class="page0dialog" name="wizardPage0"/>
   <widget class="page1dialog" name="wizardPage1"/>
+  <widget class="page1_1dialog" name="wizardPage1_1"/>
+  <widget class="page1_2dialog" name="wizardPage1_2"/>
   <widget class="page2dialog" name="wizardPage2"/>
   <widget class="page3dialog" name="wizardPage3"/>
   <widget class="page4dialog" name="wizardPage4"/>
   <widget class="page5dialog" name="wizardPage5"/>
   <widget class="page6dialog" name="wizardPage6"/>
+  <widget class="page7dialog" name="wizardPage7"/>
  </widget>
  <customwidgets>
   <customwidget>
@@ -46,6 +49,18 @@
    <header>pages.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>page1_1dialog</class>
+   <extends>QWizardPage</extends>
+   <header>pages.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>page1_2dialog</class>
+   <extends>QWizardPage</extends>
+   <header>pages.h</header>
+   <container>1</container>
+  </customwidget>  
   <customwidget>
    <class>page2dialog</class>
    <extends>QWizardPage</extends>
@@ -76,7 +91,12 @@
    <header>pages.h</header>
    <container>1</container>
   </customwidget>
- </customwidgets>
+  <customwidget>
+   <class>page7dialog</class>
+   <extends>QWizardPage</extends>
+   <header>pages.h</header>
+   <container>1</container>
+  </customwidget>
  <resources/>
  <connections/>
 </ui>

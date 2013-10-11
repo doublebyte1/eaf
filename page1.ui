@@ -19,6 +19,9 @@
   <property name="subTitle">
    <string>Initial Project Planning Step</string>
   </property>
+  <attribute name="pageId">
+   <string notr="true">1</string>
+  </attribute>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
@@ -88,9 +91,26 @@
  <resources>
   <include location="resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cmbMethod</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Page1</receiver>
+   <slot>setPageId(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
-  <slot>setComplete(bool)</slot>
   <slot>triggerMethod(int)</slot>
+  <slot>setPageId(int)</slot>
  </slots>
 </ui>

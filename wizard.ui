@@ -25,65 +25,7 @@
   <property name="subTitleFormat">
    <enum>Qt::RichText</enum>
   </property>
-  <widget class="page0dialog" name="wizardPage0"/>
-  <widget class="page1dialog" name="wizardPage1"/>
-  <widget class="page2dialog" name="wizardPage2"/>
-  <widget class="page3dialog" name="wizardPage3"/>
-  <widget class="page4dialog" name="wizardPage4"/>
-  <widget class="page5dialog" name="wizardPage5"/>
-  <widget class="page6dialog" name="wizardPage6"/>
-  <widget class="page7dialog" name="wizardPage7"/>  
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>page0dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>page1dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>page2dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>page3dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>page4dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>page5dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>page6dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>page7dialog</class>
-   <extends>QWizardPage</extends>
-   <header>pages.h</header>
-   <container>1</container>
-  </customwidget>  
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
