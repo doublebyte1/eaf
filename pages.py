@@ -17,9 +17,6 @@ from page7 import Ui_Page7
 from qgis.core import *
 from qgis.gui import *
 
-#from processing.core.Processing import Processing
-#from processing.core.ProcessingConfig import Setting, ProcessingConfig
-
 import processing
 
 
@@ -33,8 +30,17 @@ except AttributeError:
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
+strEez=QtCore.QCoreApplication.translate("page0dialog","200 Nautical Miles Arc Limits") 
+strWpi=QtCore.QCoreApplication.translate("page0dialog","World Port Index")
+strCountries=QtCore.QCoreApplication.translate("page0dialog","Global Administrative Units Layer")
+
+strEezClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strEez) 
+strWpiClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strWpi)
+strCountriesClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strCountries)
+
 
 class page0dialog(QtGui.QWizardPage):
+        
     def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page0()
@@ -48,34 +54,34 @@ class page0dialog(QtGui.QWizardPage):
                         
     def LoadBaseData(self,eaf):          
 
-        if len(QgsMapLayerRegistry.instance().mapLayersByName("World Countries")) ==0:                  
+        if len(QgsMapLayerRegistry.instance().mapLayersByName(strCountries)) ==0:                  
         
-            world = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), "World Countries", "ogr")
+            vCountries = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), strCountries, "ogr")
             
-            if not world.isValid():
+            if not vCountries.isValid():
                 print "Layer failed to load!"
                 
-            QgsMapLayerRegistry.instance().addMapLayer(world)        
-            self.world=world
+            QgsMapLayerRegistry.instance().addMapLayer(vCountries)        
+            self.vCountries=vCountries
                   
-        if len(QgsMapLayerRegistry.instance().mapLayersByName("EEZ")) ==0:                  
+        if len(QgsMapLayerRegistry.instance().mapLayersByName(strEez)) ==0:                  
         
-            eez = QgsVectorLayer(os.path.join(datapath, "World_EEZ_LR_v7_2012.shp"), "EEZ", "ogr")
+            vEez = QgsVectorLayer(os.path.join(datapath, "World_EEZ_LR_v7_2012.shp"), strEez, "ogr")
             
-            if not eez.isValid():
+            if not vEez.isValid():
                 print "Layer failed to load!"
 
-            QgsMapLayerRegistry.instance().addMapLayer(eez)
-            self.eez=eez
+            QgsMapLayerRegistry.instance().addMapLayer(vEez)
+            self.vEez=vEez
                         
-        if len(QgsMapLayerRegistry.instance().mapLayersByName("World Ports")) ==0:                  
-            wpi = QgsVectorLayer(os.path.join(datapath, "WPI.shp"), "World Ports", "ogr")
+        if len(QgsMapLayerRegistry.instance().mapLayersByName(strWpi)) ==0:                  
+            vWpi = QgsVectorLayer(os.path.join(datapath, "WPI.shp"), strWpi, "ogr")
             
-            if not wpi.isValid():
+            if not vWpi.isValid():
                 print "Layer failed to load!"
                 
-            QgsMapLayerRegistry.instance().addMapLayer(wpi)
-            self.wpi=wpi
+            QgsMapLayerRegistry.instance().addMapLayer(vWpi)
+            self.vWpi=vWpi
                                   
         self.canvas = self.eaf.iface.mapCanvas()  
         
@@ -154,13 +160,13 @@ class page1_1dialog(QtGui.QWizardPage):
     
     def clipLayers(self):
         
-        processing.runalg("qgis:clip","EEZ","selection_polygon",os.path.join(datapath, "clipped_eez.shp"))
-        processing.runalg("qgis:clip","World Countries","selection_polygon",os.path.join(datapath, "clipped_countries.shp"))
-        processing.runalg("qgis:clip","World Ports","selection_polygon",os.path.join(datapath, "clipped_ports.shp"))
+        processing.runalg("qgis:clip",strEez,"selection_polygon",os.path.join(datapath, "clipped_eez.shp"))
+        processing.runalg("qgis:clip",strCountries,"selection_polygon",os.path.join(datapath, "clipped_countries.shp"))
+        processing.runalg("qgis:clip",strWpi,"selection_polygon",os.path.join(datapath, "clipped_ports.shp"))
         
-        clip_eez = QgsVectorLayer(os.path.join(datapath, "clipped_eez.shp"), "clipped eez", "ogr")
-        clip_cnt = QgsVectorLayer(os.path.join(datapath, "clipped_countries.shp"), "clipped countries", "ogr")
-        clip_prt = QgsVectorLayer(os.path.join(datapath, "clipped_ports.shp"), "clipped ports", "ogr")
+        clip_eez = QgsVectorLayer(os.path.join(datapath, "clipped_eez.shp"), strEezClp, "ogr")
+        clip_cnt = QgsVectorLayer(os.path.join(datapath, "clipped_countries.shp"), strCountriesClp, "ogr")
+        clip_prt = QgsVectorLayer(os.path.join(datapath, "clipped_ports.shp"), "clipped " + strWpi, "ogr")
         
         QgsMapLayerRegistry.instance().addMapLayer(clip_eez)
         QgsMapLayerRegistry.instance().addMapLayer(clip_cnt)
