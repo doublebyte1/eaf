@@ -1,5 +1,5 @@
 import sys, os.path
-
+import json
 from PyQt4 import QtCore, QtGui
 
 from page0 import Ui_Page0
@@ -38,8 +38,20 @@ strEezClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strEez)
 strWpiClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strWpi)
 strCountriesClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strCountries)
 
+class myWizardPage(QtGui.QWizardPage):
+    
+    def readPageUI(self,strUI):
+        #Please reimplement this in the relevant derived classes
+        return None 
 
-class page0dialog(QtGui.QWizardPage):
+    def getPageUI(self):
+        #Please reimplement this in the relevant derived classes        
+        return None 
+    
+    def resetUI(self):
+        print "reset UI"
+        
+class page0dialog(myWizardPage):
         
     def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
@@ -85,8 +97,7 @@ class page0dialog(QtGui.QWizardPage):
                                   
         self.canvas = self.eaf.iface.mapCanvas()  
         
-
-class page1dialog(QtGui.QWizardPage):
+class page1dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1()
@@ -105,8 +116,18 @@ class page1dialog(QtGui.QWizardPage):
             return 13                          
         else:
             return 1#current page
+
+    def readPageUI(self,strUI):
+        self.ui.cmbMethod.setCurrentIndex(strUI["cmbMethod"])
+        
+    def getPageUI(self):
+        myUI={'cmbMethod': self.ui.cmbMethod.currentIndex()}
+        return myUI
+    
+    def resetUI(self):
+        self.ui.cmbMethod.setCurrentIndex(0)
                                                                                            
-class page1_1dialog(QtGui.QWizardPage):
+class page1_1dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_1()
@@ -179,7 +200,7 @@ class page1_1dialog(QtGui.QWizardPage):
         return True
         
             
-class page1_2dialog(QtGui.QWizardPage):
+class page1_2dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_2()
@@ -188,37 +209,111 @@ class page1_2dialog(QtGui.QWizardPage):
     def nextId(self):
         return 2
 
-class page1_3dialog(QtGui.QWizardPage):
+class page1_3dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_3()
         self.ui.setupUi(self)
                     
-class page2dialog(QtGui.QWizardPage):
+class page2dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page2()
         self.ui.setupUi(self)
-                
-class page3dialog(QtGui.QWizardPage):
+        
+    def readPageUI(self,strUI):        
+        self.ui.checkMaritime.setChecked(strUI["checkMaritime"])
+        self.ui.checkCoastline.setChecked(strUI["checkCoastline"])
+        self.ui.checkLandingSites.setChecked(strUI["checkLandingSites"])
+        self.ui.checkOther.setChecked(strUI["checkOther"])
+        self.ui.checkBathymetry.setChecked(strUI["checkBathymetry"])
+        
+        self.ui.cmbMaritime.setCurrentIndex(strUI["cmbMaritime"])
+        self.ui.cmbCoastline.setCurrentIndex(strUI["cmbCoastline"])        
+        self.ui.cmbLandingSites.setCurrentIndex(strUI["cmbLandingSites"])
+        self.ui.cmbOther.setCurrentIndex(strUI["cmbOther"])                
+        self.ui.cmbBathymetry.setCurrentIndex(strUI["cmbBathymetry"])
+
+    def getPageUI(self):
+        myUI={'checkMaritime': self.ui.checkMaritime.isChecked(),'checkCoastline': self.ui.checkCoastline.isChecked(),
+              'checkLandingSites': self.ui.checkLandingSites.isChecked(),'checkOther': self.ui.checkOther.isChecked(),
+              'checkBathymetry': self.ui.checkBathymetry.isChecked(),
+              'cmbMaritime': self.ui.cmbMaritime.currentIndex(),
+              'cmbCoastline': self.ui.cmbCoastline.currentIndex(),
+              'cmbLandingSites': self.ui.cmbLandingSites.currentIndex(),
+              'cmbOther': self.ui.cmbOther.currentIndex(),
+              'cmbBathymetry': self.ui.cmbBathymetry.currentIndex()}
+        return myUI 
+                            
+    def resetUI(self):
+        self.ui.checkMaritime.setChecked(False)
+        self.ui.checkCoastline.setChecked(False)
+        self.ui.checkLandingSites.setChecked(False)
+        self.ui.checkOther.setChecked(False)
+        self.ui.checkBathymetry.setChecked(False)
+        
+        self.ui.cmbMaritime.setCurrentIndex(0)
+        self.ui.cmbCoastline.setCurrentIndex(0)        
+        self.ui.cmbLandingSites.setCurrentIndex(0)
+        self.ui.cmbOther.setCurrentIndex(0)                
+        self.ui.cmbBathymetry.setCurrentIndex(0)
+                                                                        
+class page3dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page3()
         self.ui.setupUi(self)
+        
+    def readPageUI(self,strUI):
+        self.ui.cmbMethod2.setCurrentIndex(strUI["cmbMethod2"])        
+        
+    def getPageUI(self):
+        myUI={'cmbMethod2': self.ui.cmbMethod2.currentIndex()}
+        return myUI                
          
-class page4dialog(QtGui.QWizardPage):
+    def resetUI(self):
+        self.ui.cmbMethod2.setCurrentIndex(0)
+         
+class page4dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page4()
         self.ui.setupUi(self)
 
-class page5dialog(QtGui.QWizardPage):
+    def readPageUI(self,strUI):        
+        self.ui.checkFishingAreas.setChecked(strUI["checkFishingAreas"])
+        self.ui.checkLandingSites.setChecked(strUI["checkLandingSites"])
+        self.ui.checkBathymetry.setChecked(strUI["checkBathymetry"])
+        
+        self.ui.cmbFishingAreas.setCurrentIndex(strUI["cmbFishingAreas"])
+        self.ui.cmbLandingSites.setCurrentIndex(strUI["cmbLandingSites"])
+        self.ui.cmbBathymetry.setCurrentIndex(strUI["cmbBathymetry"])
+        
+    def getPageUI(self):
+        myUI={'checkFishingAreas': self.ui.checkFishingAreas.isChecked(),
+              'checkLandingSites': self.ui.checkLandingSites.isChecked(),
+              'checkBathymetry': self.ui.checkBathymetry.isChecked(),              
+              'cmbLandingSites': self.ui.cmbLandingSites.currentIndex(),
+              'cmbFishingAreas': self.ui.cmbFishingAreas.currentIndex(),
+              'cmbBathymetry': self.ui.cmbBathymetry.currentIndex()}
+        return myUI 
+
+    def resetUI(self):
+        self.ui.checkFishingAreas.setChecked(False)
+        self.ui.checkLandingSites.setChecked(False)
+        self.ui.checkBathymetry.setChecked(False)
+        
+        self.ui.cmbFishingAreas.setCurrentIndex(0)
+        self.ui.cmbLandingSites.setCurrentIndex(0)
+        self.ui.cmbBathymetry.setCurrentIndex(0)
+
+class page5dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page5()
         self.ui.setupUi(self)
  
-class page6dialog(QtGui.QWizardPage):
+class page6dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page6()
@@ -226,7 +321,7 @@ class page6dialog(QtGui.QWizardPage):
 
         self.setPixmap(QtGui.QWizard.WatermarkPixmap, QtGui.QPixmap(":/plugins/eaf/eaf3.jpg"))
         
-class page7dialog(QtGui.QWizardPage):
+class page7dialog(myWizardPage):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page7()

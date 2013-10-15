@@ -20,8 +20,9 @@
  ***************************************************************************/
 """
 
-#import sqlite3
 import sys, os.path
+
+import json
 
 from PyQt4 import QtCore, QtGui
 
@@ -65,14 +66,7 @@ class eafdialog(QtGui.QDockWidget):
         self.mywiz.setVisible(False)
                 
         QtCore.QObject.connect(self.mywiz, QtCore.SIGNAL("currentIdChanged(int)"), self.updateProgress)
-     
-        #try:
-         #   conn = sqlite3.connect(os.path.join(datapath, "eaf.db"))
-        #except sqlite3.Error as e:
-         #   print "An error occurred:", e.args[0]  
-
-        #self.conn = conn        
-        
+             
         self.eaf=eaf
         self.initPages()
      
@@ -91,30 +85,86 @@ class eafdialog(QtGui.QDockWidget):
                      
     def newProject(self):
 
+        self.mywiz.setStartId(0)
+        
         if not self.mywiz.isVisible():
             self.mywiz.setVisible(True)
             
         self.mywiz.restart()
+                
+        for i in self.mywiz.pageIds():
+            self.mywiz.page(i).resetUI() 
                         
     def openProject(self):
-        print "open project"
+                
+        filename = QtGui.QFileDialog.getOpenFileName(self, 'Open Project', "", "Project Files (*.json)")        
+        
+        if filename:
+            try:
+                json_data=open(filename)
+            except IOError as e:
+                print 'Error reading file:', e
+                raise
+    
+            try:            
+                data = json.load(json_data)
+                json_data.close()
+            except Exception as e:
+                print 'Error parsing json:', e
+                raise
+    
+            curPage=data["curPage"]
+            
+            
+            try:
+                self.setCurPage(curPage)
+            except Exception:
+                print 'Error setting current page:', e
+                raise
+            
+            try:            
+                self.readPageUI(curPage,data["curUI"])
+            except Exception:
+                print 'Error setting current page UI:', e
+                raise
+             
+        
+    def setCurPage(self,ID):        
+        self.mywiz.setStartId(ID)
 
+        if not self.mywiz.isVisible():
+            self.mywiz.setVisible(True)
+            
+        self.mywiz.restart()        
+
+    def readPageUI(self,ID,strUI):
+        myPage=self.mywiz.page(ID)
+        myPage.readPageUI(strUI)
+
+        
     def saveProject(self):
         
         filename = QtGui.QFileDialog.getSaveFileName(self, 'Save Project', "", "Project Files (*.json)")
-        #fname = open(filename, 'w')
-        #fname.write('test')
-        #fname.close()        
-        print filename
-        #name = ('test')
-        #page_id=self.mywiz.currentId()
-        #values=(name,page_id)
         
-        #c = self.conn.cursor()
-        #c.execute('INSERT INTO projects(name,page) values(?,?)', values)
-        
-        #self.conn.commit()
+        if filename:            
+            ID=self.getCurPage()
+            UI=self.getPageUI()
+    
+            data = {"curPage": ID, "curUI": UI}
+    
+            with open(filename, 'w') as outfile:
+                json.dump(data, outfile)
+                
+            outfile.close()            
 
+    def getCurPage(self):
+        return self.mywiz.currentId()
+                    
+    def getPageUI(self):         
+        myPage=self.mywiz.currentPage()
+        strJSON=myPage.getPageUI()        
+        return strJSON        
+                                 
     def updateProgress(self,index):
         if isinstance(self.sender(), QtGui.QWizard):
             wizard = self.sender()

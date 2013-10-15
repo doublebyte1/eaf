@@ -29,9 +29,9 @@ import resources_rc
 # Import the code for the dialog
 import eafdialog
 
-sys.path.append('/home/joana/.eclipse/org.eclipse.platform_3.8_155965261/plugins/org.python.pydev_2.8.2.2013090511/pysrc')
+#sys.path.append('/home/joana/.eclipse/org.eclipse.platform_3.8_155965261/plugins/org.python.pydev_2.8.2.2013090511/pysrc')
 
-from pydevd import *
+#from pydevd import *
 
 
 basepath = os.path.dirname(__file__)
@@ -41,7 +41,7 @@ class eaf:
 
     def __init__(self, iface):
         #Debug VERSION: REMOVE THIS FOR RELEASE!!! /////////////7
-        settrace()        
+        #settrace()        
         
         # Save reference to the QGIS interface
         self.iface = iface
@@ -92,50 +92,15 @@ class eaf:
         else:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)            
             self.dockWidget.show()
-            #self.LoadBaseData()
-            
-
-    def LoadBaseData(self):        
-        #rlayer = QgsRasterLayer(os.path.join(datapath, "africa_background.tif"), "africa_background")        
         
-        #uri = QgsDataSourceURI()
-        #uri.setDatabase(os.path.join(datapath, "WPI.shp"))
-        
-        #uri.setDataSource('','WPI', 'Geometry')
-        #wpi = QgsVectorLayer(uri.uri(), 'World Ports', 'spatialite') 
-        
-        wpi = QgsVectorLayer(os.path.join(datapath, "WPI.shp"), "World Ports", "ogr")
-        
-        if not wpi.isValid():
-            print "Layer failed to load!"
-
-        eez = QgsVectorLayer(os.path.join(datapath, "World_EEZ_LR_v7_2012.shp"), "EEZ", "ogr")
-        
-        if not eez.isValid():
-            print "Layer failed to load!"
-
-        world = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), "World Countries", "ogr")
-
-        if not world.isValid():
-            print "Layer failed to load!"
-
-        self.wpi=wpi
-        self.eez=eez
-        self.world=world
-                                  
-        self.canvas = self.iface.mapCanvas()  
-        QgsMapLayerRegistry.instance().addMapLayer(world)
-        QgsMapLayerRegistry.instance().addMapLayer(eez)
-        QgsMapLayerRegistry.instance().addMapLayer(wpi)
-        
-    def unloadBaseData(self):        
+    #def unloadBaseData(self):        
         #layerID = self.iface.mapCanvas().currentLayer().id()  
-        QgsMapLayerRegistry.instance().removeMapLayer(self.wpi.id())
-        QgsMapLayerRegistry.instance().removeMapLayer(self.eez.id())
-        QgsMapLayerRegistry.instance().removeMapLayer(self.world.id())
+     #   QgsMapLayerRegistry.instance().removeMapLayer(self.wpi.id())
+      #  QgsMapLayerRegistry.instance().removeMapLayer(self.eez.id())
+       # QgsMapLayerRegistry.instance().removeMapLayer(self.world.id())
 
-        for i in range(len(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon"))):
-            QgsMapLayerRegistry.instance().removeMapLayer(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon")[i].id())
+        #for i in range(len(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon"))):
+         #   QgsMapLayerRegistry.instance().removeMapLayer(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon")[i].id())
         
 
 

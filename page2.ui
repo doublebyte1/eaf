@@ -33,7 +33,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QCheckBox" name="CheckMaritime">
+      <widget class="QCheckBox" name="checkMaritime">
        <property name="text">
         <string>Maritime Boundaries</string>
        </property>
@@ -225,5 +225,86 @@
  <resources>
   <include location="resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBathymetry</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cmbBathymetry</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>272</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>282</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkCoastline</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cmbCoastline</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>282</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkLandingSites</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cmbLandingSites</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>173</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>282</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMaritime</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cmbMaritime</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>75</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>282</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkOther</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cmbOther</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>282</x>
+     <y>222</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

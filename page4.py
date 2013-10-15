@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page4.ui'
 #
-# Created: Fri Oct 11 10:26:10 2013
+# Created: Tue Oct 15 15:40:11 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -80,6 +80,9 @@ class Ui_Page4(object):
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         self.retranslateUi(Page4)
+        QtCore.QObject.connect(self.checkBathymetry, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbBathymetry.setEnabled)
+        QtCore.QObject.connect(self.checkLandingSites, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbLandingSites.setEnabled)
+        QtCore.QObject.connect(self.checkFishingAreas, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbFishingAreas.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(Page4)
 
     def retranslateUi(self, Page4):

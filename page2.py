@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page2.ui'
 #
-# Created: Fri Oct 11 10:26:09 2013
+# Created: Tue Oct 15 12:02:14 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,9 +26,9 @@ class Ui_Page2(object):
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout_6 = QtGui.QHBoxLayout()
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
-        self.CheckMaritime = QtGui.QCheckBox(Page2)
-        self.CheckMaritime.setObjectName(_fromUtf8("CheckMaritime"))
-        self.horizontalLayout_6.addWidget(self.CheckMaritime)
+        self.checkMaritime = QtGui.QCheckBox(Page2)
+        self.checkMaritime.setObjectName(_fromUtf8("checkMaritime"))
+        self.horizontalLayout_6.addWidget(self.checkMaritime)
         self.cmbMaritime = QtGui.QComboBox(Page2)
         self.cmbMaritime.setEnabled(False)
         self.cmbMaritime.setObjectName(_fromUtf8("cmbMaritime"))
@@ -96,6 +96,11 @@ class Ui_Page2(object):
         self.verticalLayout.addLayout(self.horizontalLayout_4)
 
         self.retranslateUi(Page2)
+        QtCore.QObject.connect(self.checkBathymetry, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbBathymetry.setEnabled)
+        QtCore.QObject.connect(self.checkCoastline, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbCoastline.setEnabled)
+        QtCore.QObject.connect(self.checkLandingSites, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbLandingSites.setEnabled)
+        QtCore.QObject.connect(self.checkMaritime, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbMaritime.setEnabled)
+        QtCore.QObject.connect(self.checkOther, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.cmbOther.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(Page2)
 
     def retranslateUi(self, Page2):
@@ -103,7 +108,7 @@ class Ui_Page2(object):
         Page2.setTitle(QtGui.QApplication.translate("Page2", "Initiation and Planning", None, QtGui.QApplication.UnicodeUTF8))
         Page2.setSubTitle(QtGui.QApplication.translate("Page2", "Stakeholder Analysis and Engagement Step", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Page2", "Compilation of Base Data:", None, QtGui.QApplication.UnicodeUTF8))
-        self.CheckMaritime.setText(QtGui.QApplication.translate("Page2", "Maritime Boundaries", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkMaritime.setText(QtGui.QApplication.translate("Page2", "Maritime Boundaries", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbMaritime.setItemText(0, QtGui.QApplication.translate("Page2", "Please choose one...", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbMaritime.setItemText(1, QtGui.QApplication.translate("Page2", "Import", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbMaritime.setItemText(2, QtGui.QApplication.translate("Page2", "Digitize", None, QtGui.QApplication.UnicodeUTF8))
