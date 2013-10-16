@@ -27,5 +27,42 @@
   </property>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>Wizard</sender>
+   <signal>helpRequested()</signal>
+   <receiver>Wizard</receiver>
+   <slot>showHelp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Wizard</sender>
+   <signal>finished(int)</signal>
+   <receiver>Wizard</receiver>
+   <slot>houseKeeping()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>showHelp()</slot>
+  <slot>houseKeeping()</slot>
+ </slots>
 </ui>

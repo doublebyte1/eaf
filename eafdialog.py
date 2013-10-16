@@ -28,6 +28,7 @@ from PyQt4 import QtCore, QtGui
 
 from qgis.core import *
 from qgis.gui import *
+from qgis.utils import *
 
 from dock import Ui_DockWidget
 from wizard import Ui_Wizard
@@ -44,14 +45,25 @@ from pages import  page5dialog
 from pages import  page6dialog
 from pages import  page7dialog
 
+from layers import LyrMngr
+
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
 class wiz(QtGui.QWizard):
-    def __init__(self):
+    def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Wizard()
         self.ui.setupUi(self)
+        self.eaf=eaf        
+        self.lyrMngr=LyrMngr()
+        
+    def showHelp(self):
+        #TODO: review this
+        showPluginHelp("eaf", "/home/joana/git/eaf/help/build/html/index.html")
+        
+    def houseKeeping(self):
+        self.lyrMngr.removeAll()
             
 class eafdialog(QtGui.QDockWidget):    
 
@@ -60,7 +72,7 @@ class eafdialog(QtGui.QDockWidget):
         
         self.ui = Ui_DockWidget()        
         self.ui.setupUi(self)        
-        self.mywiz=wiz()
+        self.mywiz=wiz(eaf)
         
         self.ui.verticalLayout.insertWidget(0,self.mywiz)
         self.mywiz.setVisible(False)
@@ -71,17 +83,17 @@ class eafdialog(QtGui.QDockWidget):
         self.initPages()
      
     def initPages(self):
-        self.mywiz.setPage(0, page0dialog(self.eaf))
-        self.mywiz.setPage(1, page1dialog())
-        self.mywiz.setPage(11, page1_1dialog())
-        self.mywiz.setPage(12, page1_2dialog())
-        self.mywiz.setPage(13, page1_3dialog())                                                        
-        self.mywiz.setPage(2, page2dialog())                        
-        self.mywiz.setPage(3, page3dialog())                        
-        self.mywiz.setPage(4, page4dialog())                        
-        self.mywiz.setPage(5, page5dialog())                        
-        self.mywiz.setPage(6, page6dialog())                        
-        self.mywiz.setPage(7, page7dialog())
+        self.mywiz.setPage(0, page0dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(1, page1dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(2, page1_1dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(3, page1_2dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(4, page1_3dialog(self.eaf,self.mywiz))                                                       
+        self.mywiz.setPage(5, page2dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(6, page3dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(7, page4dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(8, page5dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(9, page6dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(10, page7dialog(self.eaf,self.mywiz))
                      
     def newProject(self):
 

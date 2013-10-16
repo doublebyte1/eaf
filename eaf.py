@@ -87,21 +87,7 @@ class eaf:
     def showHideDockWidget(self):
         if self.dockWidget.isVisible():
             self.dockWidget.hide()
-            #self.unloadBaseData()
-            #self.dockWidget.mywiz.restart()
         else:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockWidget)            
             self.dockWidget.show()
         
-    #def unloadBaseData(self):        
-        #layerID = self.iface.mapCanvas().currentLayer().id()  
-     #   QgsMapLayerRegistry.instance().removeMapLayer(self.wpi.id())
-      #  QgsMapLayerRegistry.instance().removeMapLayer(self.eez.id())
-       # QgsMapLayerRegistry.instance().removeMapLayer(self.world.id())
-
-        #for i in range(len(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon"))):
-         #   QgsMapLayerRegistry.instance().removeMapLayer(QgsMapLayerRegistry.instance().mapLayersByName("selection_polygon")[i].id())
-        
-
-
-

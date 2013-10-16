@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'wizard.ui'
 #
-# Created: Fri Oct 11 10:51:00 2013
+# Created: Wed Oct 16 17:07:28 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,6 +24,8 @@ class Ui_Wizard(object):
         Wizard.setSubTitleFormat(QtCore.Qt.RichText)
 
         self.retranslateUi(Wizard)
+        QtCore.QObject.connect(Wizard, QtCore.SIGNAL(_fromUtf8("helpRequested()")), Wizard.showHelp)
+        QtCore.QObject.connect(Wizard, QtCore.SIGNAL(_fromUtf8("finished(int)")), Wizard.houseKeeping)
         QtCore.QMetaObject.connectSlotsByName(Wizard)
 
     def retranslateUi(self, Wizard):

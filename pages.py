@@ -19,8 +19,8 @@ from qgis.gui import *
 
 import processing
 
-
 import eaf
+import layers
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -30,16 +30,13 @@ except AttributeError:
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
-strEez=QtCore.QCoreApplication.translate("page0dialog","200 Nautical Miles Arc Limits") 
-strWpi=QtCore.QCoreApplication.translate("page0dialog","World Port Index")
-strCountries=QtCore.QCoreApplication.translate("page0dialog","Global Administrative Units Layer")
-
-strEezClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strEez) 
-strWpiClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strWpi)
-strCountriesClp=QtCore.QCoreApplication.translate("page0dialog","clipped " + strCountries)
 
 class myWizardPage(QtGui.QWizardPage):
     
+    def __init__(self,eaf,mywiz):
+        self.eaf=eaf
+        self.mywiz=mywiz
+            
     def readPageUI(self,strUI):
         #Please reimplement this in the relevant derived classes
         return None 
@@ -49,26 +46,37 @@ class myWizardPage(QtGui.QWizardPage):
         return None 
     
     def resetUI(self):
-        print "reset UI"
+        return None
         
+    def setLayers(self):
+        print "set layers"
+
+    def zoomFull(self):        
+        canvas=self.eaf.iface.mapCanvas()
+        canvas.zoomToFullExtent()
+        
+    def showEvent(self, event):
+        self.setLayers()
+        return QtGui.QWizardPage.showEvent(self,event)
+                        
 class page0dialog(myWizardPage):
         
-    def __init__(self,eaf):
+    def __init__(self,eaf,mywiz):        
+        super(page0dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page0()
         self.ui.setupUi(self)
-        self.eaf=eaf
                 
         self.setPixmap(QtGui.QWizard.WatermarkPixmap, QtGui.QPixmap(":/plugins/eaf/eaf3.jpg"))
-                
-    def showEvent(self, event):
-        self.LoadBaseData(self.eaf)
                         
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers(None)        
+                                
     def LoadBaseData(self,eaf):          
 
-        if len(QgsMapLayerRegistry.instance().mapLayersByName(strCountries)) ==0:                  
+        if len(QgsMapLayerRegistry.instance().mapLayersByName(layers.strCountries)) ==0:                  
         
-            vCountries = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), strCountries, "ogr")
+            vCountries = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), layers.strCountries, "ogr")
             
             if not vCountries.isValid():
                 print "Layer failed to load!"
@@ -76,9 +84,9 @@ class page0dialog(myWizardPage):
             QgsMapLayerRegistry.instance().addMapLayer(vCountries)        
             self.vCountries=vCountries
                   
-        if len(QgsMapLayerRegistry.instance().mapLayersByName(strEez)) ==0:                  
+        if len(QgsMapLayerRegistry.instance().mapLayersByName(layers.strEez)) ==0:                  
         
-            vEez = QgsVectorLayer(os.path.join(datapath, "World_EEZ_LR_v7_2012.shp"), strEez, "ogr")
+            vEez = QgsVectorLayer(os.path.join(datapath, "World_EEZ_LR_v7_2012.shp"), layers.strEez, "ogr")
             
             if not vEez.isValid():
                 print "Layer failed to load!"
@@ -86,8 +94,8 @@ class page0dialog(myWizardPage):
             QgsMapLayerRegistry.instance().addMapLayer(vEez)
             self.vEez=vEez
                         
-        if len(QgsMapLayerRegistry.instance().mapLayersByName(strWpi)) ==0:                  
-            vWpi = QgsVectorLayer(os.path.join(datapath, "WPI.shp"), strWpi, "ogr")
+        if len(QgsMapLayerRegistry.instance().mapLayersByName(layers.strWpi)) ==0:                  
+            vWpi = QgsVectorLayer(os.path.join(datapath, "WPI.shp"), layers.strWpi, "ogr")
             
             if not vWpi.isValid():
                 print "Layer failed to load!"
@@ -95,10 +103,11 @@ class page0dialog(myWizardPage):
             QgsMapLayerRegistry.instance().addMapLayer(vWpi)
             self.vWpi=vWpi
                                   
-        self.canvas = self.eaf.iface.mapCanvas()  
-        
+        self.canvas = self.eaf.iface.mapCanvas()
+                
 class page1dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):        
+        super(page1dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1()
         self.ui.setupUi(self)
@@ -109,11 +118,11 @@ class page1dialog(myWizardPage):
     def nextId(self):
         ind=self.ui.cmbMethod.currentIndex()
         if ind==1:
-            return 11
+            return 2
         elif ind==2:
-            return 12
+            return 3
         elif ind==3:
-            return 13                          
+            return 4                          
         else:
             return 1#current page
 
@@ -126,29 +135,38 @@ class page1dialog(myWizardPage):
     
     def resetUI(self):
         self.ui.cmbMethod.setCurrentIndex(0)
-                                                                                           
+        
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
+        self.zoomFull()
+                                                                                                   
 class page1_1dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page1_1dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_1()
         self.ui.setupUi(self)
         
     def nextId(self):
-        return 2
+        return 5
 
-    def initializePage(self):
+    def showEvent(self, event):
+        super(page1_1dialog,self).showEvent(event)             
         self.startInteraction()
         
     def validatePage(self):        
         return self.stopInteraction(True)
                         
-    def cleanupPage(self):               
-        self.stopInteraction(False)
+    def cleanupPage(self):
+        try:
+            self.stopInteraction(False)
+        except Exception as e:
+            print 'error: ', e
                 
-    def startInteraction(self):
-        
+    def startInteraction(self):                
         vl = QgsVectorLayer("Polygon?crs=epsg:4326",
-                     "selection_polygon", "memory")                        
+                     layers.strSelection, "memory")
+                                
         if not vl.isValid():
             print "Layer failed to create!"     
                                                      
@@ -162,7 +180,7 @@ class page1_1dialog(myWizardPage):
         ok=True
                                  
         if not self.vl.isValid():
-            print "Layer failed to create!"     
+            print "No Layer"     
 
         else:
             self.vl.endEditCommand()     
@@ -181,42 +199,39 @@ class page1_1dialog(myWizardPage):
     
     def clipLayers(self):
         
-        processing.runalg("qgis:clip",strEez,"selection_polygon",os.path.join(datapath, "clipped_eez.shp"))
-        processing.runalg("qgis:clip",strCountries,"selection_polygon",os.path.join(datapath, "clipped_countries.shp"))
-        processing.runalg("qgis:clip",strWpi,"selection_polygon",os.path.join(datapath, "clipped_ports.shp"))
-        
-        clip_eez = QgsVectorLayer(os.path.join(datapath, "clipped_eez.shp"), strEezClp, "ogr")
-        clip_cnt = QgsVectorLayer(os.path.join(datapath, "clipped_countries.shp"), strCountriesClp, "ogr")
-        clip_prt = QgsVectorLayer(os.path.join(datapath, "clipped_ports.shp"), "clipped " + strWpi, "ogr")
-        
-        QgsMapLayerRegistry.instance().addMapLayer(clip_eez)
-        QgsMapLayerRegistry.instance().addMapLayer(clip_cnt)
-        QgsMapLayerRegistry.instance().addMapLayer(clip_prt)
-        
-        self.clip_eez=clip_eez
-        self.clip_cnt=clip_cnt
-        self.clip_prt=clip_prt
-        
+        processing.runalg("qgis:clip",layers.strEez,layers.strSelection,os.path.join(datapath, "clipped_eez.shp"))
+        processing.runalg("qgis:clip",layers.strCountries,layers.strSelection,os.path.join(datapath, "clipped_countries.shp"))
+        processing.runalg("qgis:clip",layers.strWpi,layers.strSelection,os.path.join(datapath, "clipped_ports.shp"))
+                
         return True
         
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
+        self.zoomFull()        
             
 class page1_2dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page1_2dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_2()
         self.ui.setupUi(self)
 
     def nextId(self):
-        return 2
+        return 5
 
 class page1_3dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page1_3dialog,self).__init__(eaf,mywiz)                
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_3()
         self.ui.setupUi(self)
+
+    def nextId(self):
+        return 5
                     
 class page2dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page2dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page2()
         self.ui.setupUi(self)
@@ -257,9 +272,14 @@ class page2dialog(myWizardPage):
         self.ui.cmbLandingSites.setCurrentIndex(0)
         self.ui.cmbOther.setCurrentIndex(0)                
         self.ui.cmbBathymetry.setCurrentIndex(0)
-                                                                        
+
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.zoomFull()
+                                                                                      
 class page3dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page3dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page3()
         self.ui.setupUi(self)
@@ -273,9 +293,14 @@ class page3dialog(myWizardPage):
          
     def resetUI(self):
         self.ui.cmbMethod2.setCurrentIndex(0)
-         
+        
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.zoomFull()
+                 
 class page4dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page4dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page4()
         self.ui.setupUi(self)
@@ -307,22 +332,44 @@ class page4dialog(myWizardPage):
         self.ui.cmbLandingSites.setCurrentIndex(0)
         self.ui.cmbBathymetry.setCurrentIndex(0)
 
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.zoomFull()
+
 class page5dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page5dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page5()
         self.ui.setupUi(self)
+
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.zoomFull()
  
 class page6dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page6dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page6()
         self.ui.setupUi(self)
-
+        
         self.setPixmap(QtGui.QWizard.WatermarkPixmap, QtGui.QPixmap(":/plugins/eaf/eaf3.jpg"))
+
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers(None)
+        self.zoomFull()
         
 class page7dialog(myWizardPage):
-    def __init__(self):
+    def __init__(self,eaf,mywiz):
+        super(page7dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page7()
         self.ui.setupUi(self)
+                
+    def nextId(self):
+        return -1 # for the moment, this is the last page
+
+    def setLayers(self):    
+        self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
+        self.zoomFull()
