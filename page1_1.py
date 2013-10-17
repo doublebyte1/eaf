@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page1_1.ui'
 #
-# Created: Fri Oct 11 14:54:56 2013
+# Created: Thu Oct 17 12:11:35 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,5 +37,5 @@ class Ui_Page1_1(object):
         Page1_1.setTitle(QtGui.QApplication.translate("Page1_1", "Initiation and Planning", None, QtGui.QApplication.UnicodeUTF8))
         Page1_1.setSubTitle(QtGui.QApplication.translate("Page1_1", "Initial Project Planning Step", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Page1_1", "<html><head/><body><p>Broad Definition of AoI using  free-hand interactive:</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Page1_1", "<html><head/><body><p>Please zom the map as you want and draw your AoI using the QGIS &quot;Add feature&quot; tool; press next when you are done.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("Page1_1", "<html><head/><body><p>Please zoom in into your area of interest; press next when you are done.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
 

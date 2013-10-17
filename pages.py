@@ -55,6 +55,10 @@ class myWizardPage(QtGui.QWizardPage):
         canvas=self.eaf.iface.mapCanvas()
         canvas.zoomToFullExtent()
         
+    def zoomIn(self):        
+        canvas=self.eaf.iface.mapCanvas()
+        canvas.zoomIn()        
+        
     def showEvent(self, event):
         self.setLayers()
         return QtGui.QWizardPage.showEvent(self,event)
@@ -112,36 +116,57 @@ class page1_1dialog(myWizardPage):
         super(page1_1dialog,self).__init__(eaf,mywiz)        
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_1()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self)                                
         
     def nextId(self):
         return 5
 
+    
     def showEvent(self, event):
-        super(page1_1dialog,self).showEvent(event)             
-        self.startInteraction()
+        super(page1_1dialog,self).showEvent(event)
+        self.eaf.iface.actionZoomIn().trigger()
         
+        #TODO: store current maptool and come back to it later
+            
     def validatePage(self):        
-        return self.stopInteraction(True)
-                        
-    def cleanupPage(self):
-        try:
-            self.stopInteraction(False)
-        except Exception as e:
-            print 'error: ', e
-                
-    def startInteraction(self):                
+        return self.createLayerFromExtent() and self.clipLayers()
+        
+    def createLayerFromExtent(self)    :            
+
         vl = QgsVectorLayer("Polygon?crs=epsg:4326",
                      layers.strSelection, "memory")
                                 
         if not vl.isValid():
             print "Layer failed to create!"     
-                                                     
-        QgsMapLayerRegistry.instance().addMapLayer(vl)    
-                
-        vl.startEditing() 
+                                            
+
+        canvas=self.eaf.iface.mapCanvas()
+        rect=canvas.extent()
         
-        self.vl=vl        
+        pr = vl.dataProvider() 
+        pr.addAttributes([ QgsField("ID", QtCore.QVariant.String)])               
+        
+        seg = QgsFeature()
+        aGeometry=QgsGeometry.fromRect(rect)
+        if  aGeometry.isGeosEmpty() or not aGeometry.isGeosValid():
+            print "invalid geometry"
+            return False
+            
+        seg.setGeometry(aGeometry)
+        
+        if not seg.isValid:
+            print "invalid feature"
+            return False
+        
+        seg.setAttributes(["1"])#who cares about this?
+        
+        pr.addFeatures([seg])
+         
+        vl.updateExtents()                       
+        QgsMapLayerRegistry.instance().addMapLayer(vl)
+        
+        return True;
+                
     
     def stopInteraction(self,save):
         ok=True

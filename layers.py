@@ -64,9 +64,9 @@ class LyrMngr:
                 
         layerList[strSelection]=aLayer( None, strSelection,None) #memory layer
         
-        layerList[strEezClp]=aLayer( "clipped_eez.shp", strEezClp,None)
-        layerList[strCountriesClp]=aLayer( "clipped_countries.shp",  strCountriesClp, None)
-        layerList[strWpiClp]=aLayer("clipped_ports.shp",  strWpiClp, None)
+        layerList[strEezClp]=aLayer( "clipped_eez.shp", strEezClp,"World_EEZ_LR_v7_2012.qml")
+        layerList[strCountriesClp]=aLayer( "clipped_countries.shp",  strCountriesClp ,"g0000_0.qml")
+        layerList[strWpiClp]=aLayer("clipped_ports.shp",  strWpiClp, "WPI.qml")
         
         self.layerList=layerList
                                       
@@ -99,6 +99,9 @@ class LyrMngr:
             vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
             if not vLayer.isValid():
                 raise Exception("Invalid Layer: " + aLayer.name)
+            
+            #iface.messageBar().pushMessage("Error", "I'm sorry Dave, I'm afraid I can't \
+             # do that", level=QgsMessageBar.CRITICAL)
 
             if aLayer.style is not None:
                 vLayer.loadNamedStyle(os.path.join(datapath, aLayer.style))
