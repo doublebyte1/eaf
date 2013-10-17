@@ -71,40 +71,7 @@ class page0dialog(myWizardPage):
                         
     def setLayers(self):
         self.mywiz.lyrMngr.setLayers(None)        
-                                
-    def LoadBaseData(self,eaf):          
-
-        if len(QgsMapLayerRegistry.instance().mapLayersByName(layers.strCountries)) ==0:                  
-        
-            vCountries = QgsVectorLayer(os.path.join(datapath, "g0000_0.shp"), layers.strCountries, "ogr")
-            
-            if not vCountries.isValid():
-                print "Layer failed to load!"
-                
-            QgsMapLayerRegistry.instance().addMapLayer(vCountries)        
-            self.vCountries=vCountries
-                  
-        if len(QgsMapLayerRegistry.instance().mapLayersByName(layers.strEez)) ==0:                  
-        
-            vEez = QgsVectorLayer(os.path.join(datapath, "World_EEZ_LR_v7_2012.shp"), layers.strEez, "ogr")
-            
-            if not vEez.isValid():
-                print "Layer failed to load!"
-
-            QgsMapLayerRegistry.instance().addMapLayer(vEez)
-            self.vEez=vEez
-                        
-        if len(QgsMapLayerRegistry.instance().mapLayersByName(layers.strWpi)) ==0:                  
-            vWpi = QgsVectorLayer(os.path.join(datapath, "WPI.shp"), layers.strWpi, "ogr")
-            
-            if not vWpi.isValid():
-                print "Layer failed to load!"
-                
-            QgsMapLayerRegistry.instance().addMapLayer(vWpi)
-            self.vWpi=vWpi
-                                  
-        self.canvas = self.eaf.iface.mapCanvas()
-                
+                                                
 class page1dialog(myWizardPage):
     def __init__(self,eaf,mywiz):        
         super(page1dialog,self).__init__(eaf,mywiz)        

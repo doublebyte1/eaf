@@ -27,7 +27,7 @@ from qgis.gui import *
 from qgis.utils import *
 
 strEez=QtCore.QCoreApplication.translate("LyrMngr","200 Nautical Miles Arc Limits") 
-strWpi=QtCore.QCoreApplication.translate("LyrMngr","World Port Index")
+strWpi=QtCore.QCoreApplication.translate("LyrMngr","World Port Index (zoom in to display)")
 strCountries=QtCore.QCoreApplication.translate("LyrMngr","Global Administrative Units Layer")
 
 strSelection=QtCore.QCoreApplication.translate("LyrMngr","selection_polygon")
@@ -40,9 +40,10 @@ basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
 class aLayer:    
-    def __init__(self,filename,name):
+    def __init__(self,filename,name,style):
         self.name=name
         self.filename=filename
+        self.style=style
 
 class LyrMngr:
 
@@ -57,15 +58,15 @@ class LyrMngr:
 
         layerList=dict()
         
-        layerList[strCountries]=aLayer("g0000_0.shp",strCountries)
-        layerList[strEez]=aLayer("World_EEZ_LR_v7_2012.shp",strEez)
-        layerList[strWpi]=aLayer("WPI.shp",strWpi)
+        layerList[strCountries]=aLayer("g0000_0.shp",strCountries,"g0000_0.qml")
+        layerList[strEez]=aLayer("World_EEZ_LR_v7_2012.shp",strEez,"World_EEZ_LR_v7_2012.qml")
+        layerList[strWpi]=aLayer("WPI.shp",strWpi,"WPI.qml")
                 
-        layerList[strSelection]=aLayer( None, strSelection) #memory layer
+        layerList[strSelection]=aLayer( None, strSelection,None) #memory layer
         
-        layerList[strEezClp]=aLayer( "clipped_eez.shp", strEezClp)
-        layerList[strCountriesClp]=aLayer( "clipped_countries.shp",  strCountriesClp)
-        layerList[strWpiClp]=aLayer("clipped_ports.shp",  strWpiClp)
+        layerList[strEezClp]=aLayer( "clipped_eez.shp", strEezClp,None)
+        layerList[strCountriesClp]=aLayer( "clipped_countries.shp",  strCountriesClp, None)
+        layerList[strWpiClp]=aLayer("clipped_ports.shp",  strWpiClp, None)
         
         self.layerList=layerList
                                       
@@ -98,6 +99,9 @@ class LyrMngr:
             vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
             if not vLayer.isValid():
                 raise Exception("Invalid Layer: " + aLayer.name)
+
+            if aLayer.style is not None:
+                vLayer.loadNamedStyle(os.path.join(datapath, aLayer.style))
                                                                   
             QgsMapLayerRegistry.instance().addMapLayer(vLayer)
 
