@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
+  <property name="title">
+   <string>Initiation and Planning</string>
+  </property>
+  <property name="subTitle">
+   <string>Stakeholder Analysis and Engagement Step</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">

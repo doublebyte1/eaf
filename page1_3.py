@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page1_3.ui'
 #
-# Created: Fri Oct 11 11:08:21 2013
+# Created: Fri Oct 18 09:40:05 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,6 +31,6 @@ class Ui_Page1_3(object):
     def retranslateUi(self, Page1_3):
         Page1_3.setWindowTitle(QtGui.QApplication.translate("Page1_3", "WizardPage", None, QtGui.QApplication.UnicodeUTF8))
         Page1_3.setTitle(QtGui.QApplication.translate("Page1_3", "Initiation and Planning", None, QtGui.QApplication.UnicodeUTF8))
-        Page1_3.setSubTitle(QtGui.QApplication.translate("Page1_3", "Initial Project Planning Step", None, QtGui.QApplication.UnicodeUTF8))
+        Page1_3.setSubTitle(QtGui.QApplication.translate("Page1_3", "Initial Project Planning", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Page1_3", "<html><head/><body><p>Broad Definition of AoI using list of water areas:</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
 

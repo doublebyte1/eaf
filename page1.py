@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page1.ui'
 #
-# Created: Fri Oct 11 10:33:00 2013
+# Created: Fri Oct 18 09:40:03 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -54,7 +54,7 @@ class Ui_Page1(object):
     def retranslateUi(self, Page1):
         Page1.setWindowTitle(QtGui.QApplication.translate("Page1", "Broad Definition of AoI", None, QtGui.QApplication.UnicodeUTF8))
         Page1.setTitle(QtGui.QApplication.translate("Page1", "Initiation and Planning", None, QtGui.QApplication.UnicodeUTF8))
-        Page1.setSubTitle(QtGui.QApplication.translate("Page1", "Initial Project Planning Step", None, QtGui.QApplication.UnicodeUTF8))
+        Page1.setSubTitle(QtGui.QApplication.translate("Page1", "Initial Project Planning", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Page1", "<html><head/><body><p>Broad Definition of AoI:</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.lbMethod.setText(QtGui.QApplication.translate("Page1", "&Select a Method", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbMethod.setItemText(0, QtGui.QApplication.translate("Page1", "Please Choose one...", None, QtGui.QApplication.UnicodeUTF8))

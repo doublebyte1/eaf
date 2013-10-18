@@ -17,7 +17,7 @@
    <string>Initiation and Planning</string>
   </property>
   <property name="subTitle">
-   <string>Conclusion</string>
+   <string>Initial Project Planning</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

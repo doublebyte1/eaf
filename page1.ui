@@ -17,7 +17,7 @@
    <string>Initiation and Planning</string>
   </property>
   <property name="subTitle">
-   <string>Initial Project Planning Step</string>
+   <string>Initial Project Planning</string>
   </property>
   <attribute name="pageId">
    <string notr="true">1</string>

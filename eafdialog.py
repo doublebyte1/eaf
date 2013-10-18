@@ -40,6 +40,7 @@ from pages import  page1_2dialog
 from pages import  page1_3dialog
 from pages import  page2dialog
 from pages import  page3dialog
+from pages import  page3_1dialog
 from pages import  page4dialog
 from pages import  page5dialog
 from pages import  page6dialog
@@ -81,19 +82,37 @@ class eafdialog(QtGui.QDockWidget):
              
         self.eaf=eaf
         self.initPages()
+        self.countPages()
      
+     
+    def countPages(self):
+        #We have to do this, to take in account he non-linear structure 
+
+        cnt=0
+        #ok=True
+        for i in self.mywiz.pageIds():
+            #if self.mywiz.page(i).objectName().find('_')!= -1 and ok==True: #for now we dont count the sub-pages                 
+                #cnt=cnt+1
+                #ok=False
+            if self.mywiz.page(i).objectName().find('_')== -1:
+                cnt=cnt+1
+                #ok=True
+
+        self.cnt=cnt
+        
     def initPages(self):
         self.mywiz.setPage(0, page0dialog(self.eaf,self.mywiz))
-        self.mywiz.setPage(1, page1dialog(self.eaf,self.mywiz))
-        self.mywiz.setPage(2, page1_1dialog(self.eaf,self.mywiz))
-        self.mywiz.setPage(3, page1_2dialog(self.eaf,self.mywiz))
-        self.mywiz.setPage(4, page1_3dialog(self.eaf,self.mywiz))                                                       
-        self.mywiz.setPage(5, page2dialog(self.eaf,self.mywiz))                        
-        self.mywiz.setPage(6, page3dialog(self.eaf,self.mywiz))                        
-        self.mywiz.setPage(7, page4dialog(self.eaf,self.mywiz))                        
-        self.mywiz.setPage(8, page5dialog(self.eaf,self.mywiz))                        
-        self.mywiz.setPage(9, page6dialog(self.eaf,self.mywiz))                        
-        self.mywiz.setPage(10, page7dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(10, page1dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(11, page1_1dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(12, page1_2dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(13, page1_3dialog(self.eaf,self.mywiz))                                                       
+        self.mywiz.setPage(20, page2dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(30, page3dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(31, page3_1dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(40, page4dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(50, page5dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(60, page6dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(70, page7dialog(self.eaf,self.mywiz))
                      
     def newProject(self):
 
@@ -180,7 +199,10 @@ class eafdialog(QtGui.QDockWidget):
     def updateProgress(self,index):
         if isinstance(self.sender(), QtGui.QWizard):
             wizard = self.sender()
-            cnt=len(wizard.pageIds())
-            val=(wizard.currentId()+1)*100/cnt
+
+            #val=(wizard.currentId()+1)*100/self.cnt
+            cid=wizard.currentId()
+            total=self.cnt
+            val=(cid/10+1)*100/total
             self.ui.progressBar.setValue(val)
             

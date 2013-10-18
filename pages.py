@@ -9,6 +9,7 @@ from page1_2 import Ui_Page1_2
 from page1_3 import Ui_Page1_3
 from page2 import Ui_Page2
 from page3 import Ui_Page3
+from page3_1 import Ui_Page3_1
 from page4 import Ui_Page4
 from page5 import Ui_Page5
 from page6 import Ui_Page6
@@ -16,8 +17,6 @@ from page7 import Ui_Page7
 
 from qgis.core import *
 from qgis.gui import *
-
-import processing
 
 import eaf
 import layers
@@ -89,13 +88,13 @@ class page1dialog(myWizardPage):
     def nextId(self):
         ind=self.ui.cmbMethod.currentIndex()
         if ind==1:
-            return 2
+            return 11
         elif ind==2:
-            return 3
+            return 12
         elif ind==3:
-            return 4                          
+            return 13                         
         else:
-            return 1#current page
+            return 10#current page
 
     def readPageUI(self,strUI):
         self.ui.cmbMethod.setCurrentIndex(strUI["cmbMethod"])
@@ -119,84 +118,17 @@ class page1_1dialog(myWizardPage):
         self.ui.setupUi(self)                                
         
     def nextId(self):
-        return 5
+        return 20
 
     
     def showEvent(self, event):
         super(page1_1dialog,self).showEvent(event)
-        self.eaf.iface.actionZoomIn().trigger()
-        
+        self.eaf.iface.actionZoomIn().trigger()        
         #TODO: store current maptool and come back to it later
             
     def validatePage(self):        
-        return self.createLayerFromExtent() and self.clipLayers()
-        
-    def createLayerFromExtent(self)    :            
-
-        vl = QgsVectorLayer("Polygon?crs=epsg:4326",
-                     layers.strSelection, "memory")
-                                
-        if not vl.isValid():
-            print "Layer failed to create!"     
-                                            
-
-        canvas=self.eaf.iface.mapCanvas()
-        rect=canvas.extent()
-        
-        pr = vl.dataProvider() 
-        pr.addAttributes([ QgsField("ID", QtCore.QVariant.String)])               
-        
-        seg = QgsFeature()
-        aGeometry=QgsGeometry.fromRect(rect)
-        if  aGeometry.isGeosEmpty() or not aGeometry.isGeosValid():
-            print "invalid geometry"
-            return False
-            
-        seg.setGeometry(aGeometry)
-        
-        if not seg.isValid:
-            print "invalid feature"
-            return False
-        
-        seg.setAttributes(["1"])#who cares about this?
-        
-        pr.addFeatures([seg])
-         
-        vl.updateExtents()                       
-        QgsMapLayerRegistry.instance().addMapLayer(vl)
-        
-        return True;
-                
-    
-    def stopInteraction(self,save):
-        ok=True
-                                 
-        if not self.vl.isValid():
-            print "No Layer"     
-
-        else:
-            self.vl.endEditCommand()     
-            if save:
-                self.layerData = self.vl.dataProvider() 
-                self.layerData.addAttributes([ QgsField("ID", QtCore.QVariant.String)])               
-                ok=self.vl.commitChanges() and self.clipLayers()
-            else:
-                ok=self.vl.rollBack()
-                QgsMapLayerRegistry.instance().removeMapLayer(self.vl.id())                
-            
-            if not ok:
-                print "oops! something went wrong!"
-            
-        return ok    
-    
-    def clipLayers(self):
-        
-        processing.runalg("qgis:clip",layers.strEez,layers.strSelection,os.path.join(datapath, "clipped_eez.shp"))
-        processing.runalg("qgis:clip",layers.strCountries,layers.strSelection,os.path.join(datapath, "clipped_countries.shp"))
-        processing.runalg("qgis:clip",layers.strWpi,layers.strSelection,os.path.join(datapath, "clipped_ports.shp"))
-                
-        return True
-        
+        return self.mywiz.lyrMngr.createLayerFromExtent(self.eaf)  and self.mywiz.lyrMngr.clipLayers() 
+                        
     def setLayers(self):
         self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
         self.zoomFull()        
@@ -209,7 +141,7 @@ class page1_2dialog(myWizardPage):
         self.ui.setupUi(self)
 
     def nextId(self):
-        return 5
+        return 20
 
 class page1_3dialog(myWizardPage):
     def __init__(self,eaf,mywiz):
@@ -219,7 +151,7 @@ class page1_3dialog(myWizardPage):
         self.ui.setupUi(self)
 
     def nextId(self):
-        return 5
+        return 20
                     
 class page2dialog(myWizardPage):
     def __init__(self,eaf,mywiz):
@@ -265,6 +197,9 @@ class page2dialog(myWizardPage):
         self.ui.cmbOther.setCurrentIndex(0)                
         self.ui.cmbBathymetry.setCurrentIndex(0)
 
+    def nextId(self):
+        return 30
+
     def setLayers(self):
         self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
         self.zoomFull()
@@ -286,10 +221,43 @@ class page3dialog(myWizardPage):
     def resetUI(self):
         self.ui.cmbMethod2.setCurrentIndex(0)
         
+    def nextId(self):
+        ind=self.ui.cmbMethod2.currentIndex()
+        if ind==1:
+            return 31
+        #elif ind==2:
+         #   return 3
+        #elif ind==3:
+         #   return 4                          
+        else:
+            return 30#current page
+                                                
     def setLayers(self):
         self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
         self.zoomFull()
-                 
+        
+class page3_1dialog(myWizardPage):
+    def __init__(self,eaf,mywiz):
+        super(page3_1dialog,self).__init__(eaf,mywiz)        
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_Page3_1()
+        self.ui.setupUi(self)                                
+        
+    def nextId(self):
+        return 40
+    
+    def showEvent(self, event):
+        super(page3_1dialog,self).showEvent(event)
+        self.eaf.iface.actionZoomIn().trigger()        
+        #TODO: store current maptool and come back to it later
+            
+    def validatePage(self):        
+        return self.mywiz.lyrMngr.createLayerFromExtent(self.eaf)  and self.mywiz.lyrMngr.reclipLayers() 
+                
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.zoomFull()        
+                         
 class page4dialog(myWizardPage):
     def __init__(self,eaf,mywiz):
         super(page4dialog,self).__init__(eaf,mywiz)        
@@ -324,8 +292,11 @@ class page4dialog(myWizardPage):
         self.ui.cmbLandingSites.setCurrentIndex(0)
         self.ui.cmbBathymetry.setCurrentIndex(0)
 
+    def nextId(self):
+        return 50
+
     def setLayers(self):
-        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp])
         self.zoomFull()
 
 class page5dialog(myWizardPage):
@@ -335,8 +306,11 @@ class page5dialog(myWizardPage):
         self.ui = Ui_Page5()
         self.ui.setupUi(self)
 
+    def nextId(self):
+        return 60
+
     def setLayers(self):
-        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp])
         self.zoomFull()
  
 class page6dialog(myWizardPage):
@@ -347,6 +321,9 @@ class page6dialog(myWizardPage):
         self.ui.setupUi(self)
         
         self.setPixmap(QtGui.QWizard.WatermarkPixmap, QtGui.QPixmap(":/plugins/eaf/eaf3.jpg"))
+
+    def nextId(self):
+        return 70
 
     def setLayers(self):
         self.mywiz.lyrMngr.setLayers(None)

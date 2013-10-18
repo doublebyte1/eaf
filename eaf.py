@@ -41,7 +41,7 @@ class eaf:
 
     def __init__(self, iface):
         #Debug VERSION: REMOVE THIS FOR RELEASE!!! /////////////7
-        #settrace()        
+ #       settrace()        
         
         # Save reference to the QGIS interface
         self.iface = iface

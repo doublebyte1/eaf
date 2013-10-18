@@ -26,6 +26,8 @@ from qgis.core import *
 from qgis.gui import *
 from qgis.utils import *
 
+import processing
+
 strEez=QtCore.QCoreApplication.translate("LyrMngr","200 Nautical Miles Arc Limits") 
 strWpi=QtCore.QCoreApplication.translate("LyrMngr","World Port Index (zoom in to display)")
 strCountries=QtCore.QCoreApplication.translate("LyrMngr","Global Administrative Units Layer")
@@ -35,6 +37,10 @@ strSelection=QtCore.QCoreApplication.translate("LyrMngr","selection_polygon")
 strEezClp=QtCore.QCoreApplication.translate("LyrMngr","clipped " + strEez) 
 strWpiClp=QtCore.QCoreApplication.translate("LyrMngr","clipped " + strWpi)
 strCountriesClp=QtCore.QCoreApplication.translate("LyrMngr","clipped " + strCountries)
+
+strEezRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strEez) 
+strWpiRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strWpi)
+strCountriesRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strCountries)
 
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
@@ -67,6 +73,10 @@ class LyrMngr:
         layerList[strEezClp]=aLayer( "clipped_eez.shp", strEezClp,"World_EEZ_LR_v7_2012.qml")
         layerList[strCountriesClp]=aLayer( "clipped_countries.shp",  strCountriesClp ,"g0000_0.qml")
         layerList[strWpiClp]=aLayer("clipped_ports.shp",  strWpiClp, "WPI.qml")
+
+        layerList[strEezRclp]=aLayer( "reclipped_eez.shp", strEezRclp,"World_EEZ_LR_v7_2012.qml")
+        layerList[strCountriesRclp]=aLayer( "reclipped_countries.shp",  strCountriesRclp ,"g0000_0.qml")
+        layerList[strWpiRclp]=aLayer("reclipped_ports.shp",  strWpiRclp, "WPI.qml")
         
         self.layerList=layerList
                                       
@@ -114,4 +124,67 @@ class LyrMngr:
                 QgsMapLayerRegistry.instance().removeMapLayer(QgsMapLayerRegistry.instance().mapLayersByName(aLayer.name)[i].id())
                                              
                                             
-    
+    def createLayerFromExtent(self,eaf)    :            
+
+        vl = QgsVectorLayer("Polygon?crs=epsg:4326",
+                     strSelection, "memory")
+                                
+        if not vl.isValid():
+            print "Layer failed to create!"     
+                                            
+
+        canvas=eaf.iface.mapCanvas()
+        rect=canvas.extent()
+        
+        pr = vl.dataProvider() 
+        pr.addAttributes([ QgsField("ID", QtCore.QVariant.String)])               
+        
+        seg = QgsFeature()
+        aGeometry=QgsGeometry.fromRect(rect)
+        if  aGeometry.isGeosEmpty() or not aGeometry.isGeosValid():
+            print "invalid geometry"
+            return False
+            
+        seg.setGeometry(aGeometry)
+        
+        if not seg.isValid:
+            print "invalid feature"
+            return False
+        
+        seg.setAttributes(["1"])#who cares about this?
+        
+        pr.addFeatures([seg])
+         
+        vl.updateExtents()                       
+        QgsMapLayerRegistry.instance().addMapLayer(vl)
+        
+        return True;
+
+                    
+    def clipLayer(self,input,clip,output):
+        #TODO: change this to generate a memory layer?
+        return processing.runalg("qgis:clip",input,clip,os.path.join(datapath, output))
+
+                    
+    def clipLayers(self):
+        ok=True
+        if not self.clipLayer(self.layerList[strEez].name,strSelection,self.layerList[strEezClp].filename):
+            ok=False        
+        if not self.clipLayer(self.layerList[strCountries].name,strSelection,self.layerList[strCountriesClp].filename):
+            ok=False
+        if not self.clipLayer(self.layerList[strWpi].name,strSelection,self.layerList[strWpiClp].filename):
+            ok=True
+                                        
+        return ok
+
+    def reclipLayers(self):
+        ok=True
+        if not self.clipLayer(self.layerList[strEezClp].name,strSelection,self.layerList[strEezRclp].filename):
+            ok=False        
+        if not self.clipLayer(self.layerList[strCountriesClp].name,strSelection,self.layerList[strCountriesRclp].filename):
+            ok=False
+        if not self.clipLayer(self.layerList[strWpiClp].name,strSelection,self.layerList[strWpiRclp].filename):
+            ok=True
+                                        
+        return ok
+

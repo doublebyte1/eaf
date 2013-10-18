@@ -17,7 +17,7 @@
    <string>Initiation and Planning</string>
   </property>
   <property name="subTitle">
-   <string>Stakeholder Analysis and Engagement Step</string>
+   <string>Initial Project Planning</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
