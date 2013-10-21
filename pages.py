@@ -11,6 +11,7 @@ from page2 import Ui_Page2
 from page3 import Ui_Page3
 from page3_1 import Ui_Page3_1
 from page4 import Ui_Page4
+from page4_1 import Ui_Page4_1
 from page5 import Ui_Page5
 from page6 import Ui_Page6
 from page7 import Ui_Page7
@@ -131,7 +132,7 @@ class page1_1dialog(myWizardPage):
         #TODO: store current maptool and come back to it later
             
     def validatePage(self):        
-        return self.mywiz.lyrMngr.createLayerFromExtent(self.eaf)  and self.mywiz.lyrMngr.clipLayers() 
+        return self.mywiz.lyrMngr.createLayerFromExtent(self.eaf) and self.mywiz.lyrMngr.clipLayers() 
                         
     def setLayers(self):
         self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
@@ -144,17 +145,37 @@ class page1_2dialog(myWizardPage):
         self.ui = Ui_Page1_2()
         self.ui.setupUi(self)
         
-        self.initCombo()
+        self.initList()
 
-    def initCombo(self):
+    def initList(self):
         list=self.mywiz.lyrMngr.readCountries()
-        self.ui.cmbCountries.addItems(list)
+        #self.ui.cmbCountries.addItems(list)
+             
+        model = QtGui.QStandardItemModel()
+        
+        for i in list:        
+            item = QtGui.QStandardItem(i) 
+            # Add a checkbox to it
+            #item.setCheckable(True) 
+            # Add the item to the model
+            model.appendRow(item)
+        
+        
+        self.ui.listCountries.setModel(model)
 
-    def validatePage(self):        
-        return self.mywiz.lyrMngr.createLayerFromCountry(eaf,self.ui.cmbCountries.currentText()) 
+    def validatePage(self):            
+        list=[]
+        for i in self.ui.listCountries.selectedIndexes():
+            list.append(self.ui.listCountries.model().data(i))
+                
+        return self.mywiz.lyrMngr.createLayerFromCountry(eaf,list) and self.mywiz.lyrMngr.clipLayers()
 
     def nextId(self):
         return 20
+    
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
+        self.zoomFull()        
 
 class page1_3dialog(myWizardPage):
     def __init__(self,eaf,mywiz):
@@ -214,7 +235,6 @@ class page2dialog(myWizardPage):
         return 30
 
     def setLayers(self):
-        #self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
         self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
         self.zoomFull()
                                                                                       
@@ -305,6 +325,28 @@ class page4dialog(myWizardPage):
         self.ui.cmbFishingAreas.setCurrentIndex(0)
         self.ui.cmbLandingSites.setCurrentIndex(0)
         self.ui.cmbBathymetry.setCurrentIndex(0)
+
+    def nextId(self):
+        ind=self.ui.cmbBathymetry.currentIndex()
+        if ind==2:
+            return 41
+        #elif ind==2:
+         #   return 3
+        #elif ind==3:
+         #   return 4                          
+        else:
+            return 40#current page
+        
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp])
+        self.zoomFull()
+
+class page4_1dialog(myWizardPage):
+    def __init__(self,eaf,mywiz):
+        super(page4_1dialog,self).__init__(eaf,mywiz)        
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_Page4_1()
+        self.ui.setupUi(self)
 
     def nextId(self):
         return 50

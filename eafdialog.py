@@ -42,6 +42,7 @@ from pages import  page2dialog
 from pages import  page3dialog
 from pages import  page3_1dialog
 from pages import  page4dialog
+from pages import  page4_1dialog
 from pages import  page5dialog
 from pages import  page6dialog
 from pages import  page7dialog
@@ -135,7 +136,8 @@ class eafdialog(QtGui.QDockWidget):
         self.mywiz.setPage(20, page2dialog(self.eaf,self.mywiz))                        
         self.mywiz.setPage(30, page3dialog(self.eaf,self.mywiz))                        
         self.mywiz.setPage(31, page3_1dialog(self.eaf,self.mywiz))                        
-        self.mywiz.setPage(40, page4dialog(self.eaf,self.mywiz))                        
+        self.mywiz.setPage(40, page4dialog(self.eaf,self.mywiz))
+        self.mywiz.setPage(41, page4_1dialog(self.eaf,self.mywiz))                                                        
         self.mywiz.setPage(50, page5dialog(self.eaf,self.mywiz))                        
         self.mywiz.setPage(60, page6dialog(self.eaf,self.mywiz))                        
         self.mywiz.setPage(70, page7dialog(self.eaf,self.mywiz))

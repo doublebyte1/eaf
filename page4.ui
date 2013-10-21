@@ -17,7 +17,7 @@
    <string>Initiation and Planning</string>
   </property>
   <property name="subTitle">
-   <string>Stakeholder Analysis and Engagement Step</string>
+   <string>Stakeholder Analysis and Engagement</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -50,6 +50,11 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>Free-hand interactive</string>
@@ -91,6 +96,11 @@
        </property>
        <item>
         <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Free-hand interactive</string>
         </property>
        </item>
@@ -128,6 +138,11 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <item>
+        <property name="text">
+         <string>Please choose one...</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>Free-hand interactive</string>

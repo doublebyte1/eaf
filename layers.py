@@ -178,7 +178,7 @@ class LyrMngr:
         
         return True;
 
-    def createLayerFromCountry(self,eaf,name)    :            
+    def createLayerFromCountry(self,eaf,names)    :            
 
         aLayer=self.layerList[strCountries]# find countries layer
         cLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
@@ -186,27 +186,36 @@ class LyrMngr:
         if not cLayer.isValid():
             raise Exception("Invalid Layer: " + aLayer.name)
 
-        #vl = QgsVectorLayer("Polygon?crs=epsg:4326",
-         #            strSelection, "memory")
+        vl = QgsVectorLayer("Polygon?crs=epsg:4326",
+                     strSelection, "memory")
                                 
-        #if not vl.isValid():
-         #   print "Layer failed to create!"     
+        if not vl.isValid():
+            print "Layer failed to create!"     
                                                     
-        #pr = vl.dataProvider() 
-        #pr.addAttributes([ QgsField("ID", QtCore.QVariant.String)])               
+        pr = vl.dataProvider() 
+        pr.addAttributes([ QgsField("ID", QtCore.QVariant.String)])               
 
+        request=QgsFeatureRequest()
 
-        cLayer.select([1])
+        #Builds the feature        
+        exp=""
+        for name in names:
+            exp= exp +"\"ADM0_NAME\" = '" + name + "' "  
+            if names.index(name) < len(names)-1:
+                exp= exp + "OR "
+            
+        request.setFilterExpression(exp)
+        features=cLayer.getFeatures(request)
+        l=[]
+        for f in features:
+            l.append(f.id())
+            
+        cLayer.select(l)
 
-        aLayer=self.layerList[strSelection]# find selection layer        
-        error = QgsVectorFileWriter.writeAsVectorFormat(cLayer, aLayer.filename, 
-                                                        "CP1250", None, "memory",True)
+        pr.addFeatures(  cLayer.selectedFeatures() )
+        vl.updateExtents()        
         
-        #cLayer.selectAll()
-        #print cLayer.selectedFeatureCount()
-        
-        
-        #QgsMapLayerRegistry.instance().addMapLayer(vl)
+        QgsMapLayerRegistry.instance().addMapLayer(vl)
         
         return True;
                     

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page5.ui'
 #
-# Created: Fri Oct 18 09:40:05 2013
+# Created: Mon Oct 21 09:36:29 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,7 +31,7 @@ class Ui_Page5(object):
     def retranslateUi(self, Page5):
         Page5.setWindowTitle(QtGui.QApplication.translate("Page5", "WizardPage", None, QtGui.QApplication.UnicodeUTF8))
         Page5.setTitle(QtGui.QApplication.translate("Page5", "Initiation and Planning", None, QtGui.QApplication.UnicodeUTF8))
-        Page5.setSubTitle(QtGui.QApplication.translate("Page5", "Stakeholder Analysis and Engagement Step", None, QtGui.QApplication.UnicodeUTF8))
+        Page5.setSubTitle(QtGui.QApplication.translate("Page5", "Stakeholder Analysis and Engagement", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Page5", "Expert-based Approach:", None, QtGui.QApplication.UnicodeUTF8))
 
 import resources_rc
