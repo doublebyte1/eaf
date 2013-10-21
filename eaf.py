@@ -19,6 +19,8 @@
  *                                                                         *
  ***************************************************************************/
 """
+
+
 import sys, os.path
 # Import the PyQt and QGIS libraries
 from PyQt4.QtCore import *
@@ -33,15 +35,30 @@ import eafdialog
 
 #from pydevd import *
 
+## @package eaf
+#  This package implements a EAF wizard.  
+################################################
+
 
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
+
+## eaf
+#
+#  This is the main QGIS Plugin class; 
+#
+#  It is pretty standard for all plugins; It contains a pointer to the QGIS UI, and it initializes the  plugin dialogue (eafdialog).
+################################################
 class eaf:
 
+    ## Constructor
+    #
+    #  This is a constructor
+    ##########################################################
     def __init__(self, iface):
         #Debug VERSION: REMOVE THIS FOR RELEASE!!! /////////////7
- #       settrace()        
+        #settrace()        
         
         # Save reference to the QGIS interface
         self.iface = iface
@@ -70,6 +87,11 @@ class eaf:
             QCoreApplication.installTranslator(self.translator)
 
 
+    ## Initializes GUI
+    #
+    #  In this function we create an icon in the toobar and an entry on the plugin menu.
+    # We also instantiate the eaf dialogue as a dock widget.
+    ##############################################################
     def initGui(self):
         self.action = QAction(QIcon(":/plugins/eaf/icon.png"),  "eaf", self.iface.mainWindow())           
         QObject.connect(self.action, SIGNAL("triggered()"), self.showHideDockWidget)
@@ -78,12 +100,19 @@ class eaf:
         self.dockWidget = eafdialog.eafdialog(self)
         
 
+    ## Unload Plugin
+    #
+    #  It removes the plugin from the toolbar, and from the plugin menu.
+    ##############################################################
     def unload(self):
         # Remove the plugin menu item and icon
         self.iface.removePluginMenu("&GISforEAF",self.action)
         self.iface.removeToolBarIcon(self.action)
 
-
+    ## Show/Hide dock widget
+    #
+    #  This function switches the state of the plugin window (visible or invisible).
+    ##############################################################
     def showHideDockWidget(self):
         if self.dockWidget.isVisible():
             self.dockWidget.hide()

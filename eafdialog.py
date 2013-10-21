@@ -51,6 +51,11 @@ from layers import LyrMngr
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
+## wiz
+#
+#  Class that implements the wizard; 
+#
+################################################    
 class wiz(QtGui.QWizard):
     def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
@@ -65,9 +70,20 @@ class wiz(QtGui.QWizard):
         
     def houseKeeping(self):
         self.lyrMngr.removeAll()
-            
+       
+## EAF Dialogue
+#
+#  This is the main plugin dialogue; 
+#
+#  Here we initialize a wizard; we store a pointer to eaf (where the QGIS interface is) and to the wizard.
+#  This class owns the progress bar.
+################################################            
 class eafdialog(QtGui.QDockWidget):    
 
+    ## Constructor
+    #
+    #  This is a constructor
+    ##########################################################
     def __init__(self,eaf):
         QtGui.QDialog.__init__(self)
         
@@ -84,7 +100,11 @@ class eafdialog(QtGui.QDockWidget):
         self.initPages()
         self.countPages()
      
-     
+    ## Counts the number of pages in the Wizard
+    #
+    #  This function counts the number of pages in the wizard, for calculating the percentage in the progress bar.
+    #  Since it is a non-linear wizard, and to keep it simple, we ignore the pages that implement branches, and stick to the major ID's only (10,20,etc).    
+    ##########################################################     
     def countPages(self):
         #We have to do this, to take in account he non-linear structure 
 
@@ -100,6 +120,12 @@ class eafdialog(QtGui.QDockWidget):
 
         self.cnt=cnt
         
+    ## Init Pages
+    #
+    #  Inserts the pages in the wizard, forcing them to a specific ID.
+    #  The jumps in ID's between major pages are of 10, so that we are able to insert more pages later without refactoring the whole thing.
+    #  This forces to a discipline of reimplementing nextID() in the page classes.      
+    ##########################################################             
     def initPages(self):
         self.mywiz.setPage(0, page0dialog(self.eaf,self.mywiz))
         self.mywiz.setPage(10, page1dialog(self.eaf,self.mywiz))
@@ -113,7 +139,11 @@ class eafdialog(QtGui.QDockWidget):
         self.mywiz.setPage(50, page5dialog(self.eaf,self.mywiz))                        
         self.mywiz.setPage(60, page6dialog(self.eaf,self.mywiz))                        
         self.mywiz.setPage(70, page7dialog(self.eaf,self.mywiz))
-                     
+
+    ## New Project
+    #
+    #  Initializes a project by restarting the wizard, making it visible, setting the first ID to 0 and resetting the UI.
+    ##########################################################                                  
     def newProject(self):
 
         self.mywiz.setStartId(0)
@@ -125,7 +155,14 @@ class eafdialog(QtGui.QDockWidget):
                 
         for i in self.mywiz.pageIds():
             self.mywiz.page(i).resetUI() 
-                        
+              
+    ## Open Project
+    #
+    #  Reads project from JSON file.
+    #  In this implementation we set the start ID to the one saved on the project, which means you cannot go back on the wizard
+    # , once you save something (it makes sense). Thus, we only save the ID of the current page and the current state of the UI on this page. 
+    #  The data belonging to this page will be automatically loaded.
+    ##########################################################                                                          
     def openProject(self):
                 
         filename = QtGui.QFileDialog.getOpenFileName(self, 'Open Project', "", "Project Files (*.json)")        
@@ -159,7 +196,12 @@ class eafdialog(QtGui.QDockWidget):
                 print 'Error setting current page UI:', e
                 raise
              
-        
+             
+    ## Set Current Page
+    #
+    #  This function is used by OpenProject.     
+    # It sets the startID from the current page, makes sure the wizard is visible and restarts it.
+    ##########################################################          
     def setCurPage(self,ID):        
         self.mywiz.setStartId(ID)
 
@@ -168,11 +210,21 @@ class eafdialog(QtGui.QDockWidget):
             
         self.mywiz.restart()        
 
+    ## Read Page UI
+    #
+    #  This function is used by openProject.     
+    # It sets the state of the UI on the relevant page, from a JSON string.
+    ##########################################################    
     def readPageUI(self,ID,strUI):
         myPage=self.mywiz.page(ID)
         myPage.readPageUI(strUI)
 
         
+    ## Save Project
+    #
+    #  Saves project on JSON file.
+    # We only save the ID of the current page and the current state of the UI on this page. 
+    ##########################################################          
     def saveProject(self):
         
         filename = QtGui.QFileDialog.getSaveFileName(self, 'Save Project', "", "Project Files (*.json)")
@@ -188,14 +240,28 @@ class eafdialog(QtGui.QDockWidget):
                 
             outfile.close()            
 
+    ## Get Current Page
+    #
+    #  Convenience function to retrieve the current's page ID.
+    ##########################################################  
     def getCurPage(self):
         return self.mywiz.currentId()
-                    
+
+    ## Get Page UI
+    #
+    #  This function is used by saveProject.     
+    # It asks the relevant page to provide a JSON string, with the current state of the UI.
+    ##########################################################                        
     def getPageUI(self):         
         myPage=self.mywiz.currentPage()
         strJSON=myPage.getPageUI()        
         return strJSON        
-                                 
+
+    ## Update Progress Bar
+    #
+    #  This function is called by a signal, emitted every time we change page.
+    # It updates the progress bar, based on the current iD and the self.cnt variable, calculated by countPages()
+    ##########################################################                                   
     def updateProgress(self,index):
         if isinstance(self.sender(), QtGui.QWizard):
             wizard = self.sender()

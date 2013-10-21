@@ -29,7 +29,11 @@ except AttributeError:
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
-
+## Generic Wizard Page
+#
+#  Base class for a wizard page. 
+#  It provides all sorts of virtual methods, and it stores pointers to the eaf class and to the wizard.
+################################################   
 class myWizardPage(QtGui.QWizardPage):
     
     def __init__(self,eaf,mywiz):
@@ -139,6 +143,15 @@ class page1_2dialog(myWizardPage):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_Page1_2()
         self.ui.setupUi(self)
+        
+        self.initCombo()
+
+    def initCombo(self):
+        list=self.mywiz.lyrMngr.readCountries()
+        self.ui.cmbCountries.addItems(list)
+
+    def validatePage(self):        
+        return self.mywiz.lyrMngr.createLayerFromCountry(eaf,self.ui.cmbCountries.currentText()) 
 
     def nextId(self):
         return 20
@@ -201,6 +214,7 @@ class page2dialog(myWizardPage):
         return 30
 
     def setLayers(self):
+        #self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
         self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
         self.zoomFull()
                                                                                       

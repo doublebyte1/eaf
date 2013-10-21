@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Page1_2</class>
- <widget class="QWizardPage" name="Page1_2">
+ <class>Page3_1</class>
+ <widget class="QWizardPage" name="Page3_1">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,14 +19,11 @@
   <property name="subTitle">
    <string>Initial Project Planning</string>
   </property>
-  <attribute name="pageId">
-   <string notr="true"/>
-  </attribute>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Broad Definition of AoI using list of countries/regions:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refine the definition of AoI using  free-hand interactive:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -34,7 +31,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="cmbCountries"/>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please zoom in into your area of interest; press next when you are done.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

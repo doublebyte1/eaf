@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'page1_2.ui'
 #
-# Created: Fri Oct 18 09:40:04 2013
+# Created: Fri Oct 18 12:45:55 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,6 +24,9 @@ class Ui_Page1_2(object):
         self.label_2.setWordWrap(True)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.verticalLayout.addWidget(self.label_2)
+        self.cmbCountries = QtGui.QComboBox(Page1_2)
+        self.cmbCountries.setObjectName(_fromUtf8("cmbCountries"))
+        self.verticalLayout.addWidget(self.cmbCountries)
 
         self.retranslateUi(Page1_2)
         QtCore.QMetaObject.connectSlotsByName(Page1_2)

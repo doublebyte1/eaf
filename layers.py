@@ -45,14 +45,32 @@ strCountriesRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strC
 basepath = os.path.dirname(__file__)
 datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
-class aLayer:    
+## Layer
+#
+#  This is a layer structure, that contains a name, a filename, and a style filename. 
+#  It is provided for convenience, as we can store these objects lightly in a container, and instantiate them at any moment.
+################################################   
+class aLayer:
+    ## Constructor
+    #
+    #  This is a constructor
+    ##########################################################
     def __init__(self,filename,name,style):
         self.name=name
         self.filename=filename
         self.style=style
 
+## Layer Manager
+#
+#  This class implements the layer manager.    
+#  Here we store a dictionary with all the layers we need, and we manage them, by adding them/ removing them from the map view.
+#  We also perform operations that generate new layers (e.g.: clipping); in reality, all the GIS code is in this class.
+################################################   
 class LyrMngr:
-
+    ## Constructor
+    #
+    #  This is a constructor
+    ##########################################################
     def __init__(self):
         self.initLayers()                
 
@@ -160,6 +178,37 @@ class LyrMngr:
         
         return True;
 
+    def createLayerFromCountry(self,eaf,name)    :            
+
+        aLayer=self.layerList[strCountries]# find countries layer
+        cLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        
+        if not cLayer.isValid():
+            raise Exception("Invalid Layer: " + aLayer.name)
+
+        #vl = QgsVectorLayer("Polygon?crs=epsg:4326",
+         #            strSelection, "memory")
+                                
+        #if not vl.isValid():
+         #   print "Layer failed to create!"     
+                                                    
+        #pr = vl.dataProvider() 
+        #pr.addAttributes([ QgsField("ID", QtCore.QVariant.String)])               
+
+
+        cLayer.select([1])
+
+        aLayer=self.layerList[strSelection]# find selection layer        
+        error = QgsVectorFileWriter.writeAsVectorFormat(cLayer, aLayer.filename, 
+                                                        "CP1250", None, "memory",True)
+        
+        #cLayer.selectAll()
+        #print cLayer.selectedFeatureCount()
+        
+        
+        #QgsMapLayerRegistry.instance().addMapLayer(vl)
+        
+        return True;
                     
     def clipLayer(self,input,clip,output):
         #TODO: change this to generate a memory layer?
@@ -187,4 +236,26 @@ class LyrMngr:
             ok=True
                                         
         return ok
+    
+    def readCountries(self):
+        aLayer=self.layerList[strCountries]# find countries layer
+        vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        
+        if not vLayer.isValid():
+            raise Exception("Invalid Layer: " + aLayer.name)
+        
+        aList=[]
+        iter = vLayer.getFeatures()
+        for feat in iter:
+            attrs = feat.attributes()
+            idx = vLayer.fieldNameIndex('ADM0_Name')
+            #print feat.attributes()[idx]            
+            aList.append(feat.attributes()[idx])
+               
+        #remove duplicates
+        noDups=list(set(aList))
+        sorted=noDups.sort()
+                                            
+        return noDups
+    
 
