@@ -10,6 +10,7 @@ from page1_3 import Ui_Page1_3
 from page2 import Ui_Page2
 from page3 import Ui_Page3
 from page3_1 import Ui_Page3_1
+from page3_2 import Ui_Page3_2
 from page4 import Ui_Page4
 from page4_1 import Ui_Page4_1
 from page5 import Ui_Page5
@@ -148,16 +149,12 @@ class page1_2dialog(myWizardPage):
         self.initList()
 
     def initList(self):
-        list=self.mywiz.lyrMngr.readCountries()
-        #self.ui.cmbCountries.addItems(list)
+        list=self.mywiz.lyrMngr.readCountries(layers.strCountries)
              
         model = QtGui.QStandardItemModel()
         
         for i in list:        
             item = QtGui.QStandardItem(i) 
-            # Add a checkbox to it
-            #item.setCheckable(True) 
-            # Add the item to the model
             model.appendRow(item)
         
         
@@ -168,7 +165,7 @@ class page1_2dialog(myWizardPage):
         for i in self.ui.listCountries.selectedIndexes():
             list.append(self.ui.listCountries.model().data(i))
                 
-        return self.mywiz.lyrMngr.createLayerFromCountry(eaf,list) and self.mywiz.lyrMngr.clipLayers()
+        return self.mywiz.lyrMngr.createLayerFromCountry(eaf,layers.strCountries,list) and self.mywiz.lyrMngr.clipLayers()
 
     def nextId(self):
         return 20
@@ -259,8 +256,8 @@ class page3dialog(myWizardPage):
         ind=self.ui.cmbMethod2.currentIndex()
         if ind==1:
             return 31
-        #elif ind==2:
-         #   return 3
+        elif ind==2:
+            return 32
         #elif ind==3:
          #   return 4                          
         else:
@@ -288,6 +285,42 @@ class page3_1dialog(myWizardPage):
     def validatePage(self):        
         return self.mywiz.lyrMngr.createLayerFromExtent(self.eaf)  and self.mywiz.lyrMngr.reclipLayers() 
                 
+    def setLayers(self):
+        self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
+        self.zoomFull()        
+
+class page3_2dialog(myWizardPage):
+    def __init__(self,eaf,mywiz):
+        super(page3_2dialog,self).__init__(eaf,mywiz)        
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_Page3_2()
+        self.ui.setupUi(self)
+        
+    def initializePage(self): 
+        self.initList()
+
+    def initList(self):
+        if self.mywiz.lyrMngr.layerExists(layers.strCountriesClp):
+                    
+            list=self.mywiz.lyrMngr.readCountries(layers.strCountriesClp)                 
+            model = QtGui.QStandardItemModel()            
+            for i in list:        
+                item = QtGui.QStandardItem(i) 
+                model.appendRow(item)
+            
+            
+            self.ui.listCountries.setModel(model)
+
+    def validatePage(self):            
+        list=[]
+        for i in self.ui.listCountries.selectedIndexes():
+            list.append(self.ui.listCountries.model().data(i))
+                
+        return self.mywiz.lyrMngr.createLayerFromCountry(eaf,layers.strCountriesClp,list) and self.mywiz.lyrMngr.reclipLayers()
+
+    def nextId(self):
+        return 40
+    
     def setLayers(self):
         self.mywiz.lyrMngr.setLayers([layers.strEezClp,layers.strWpiClp,layers.strCountriesClp])
         self.zoomFull()        

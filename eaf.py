@@ -31,9 +31,9 @@ import resources_rc
 # Import the code for the dialog
 import eafdialog
 
-sys.path.append('/home/joana/.eclipse/org.eclipse.platform_3.8_155965261/plugins/org.python.pydev_2.8.2.2013090511/pysrc')
+#sys.path.append('/home/joana/.eclipse/org.eclipse.platform_3.8_155965261/plugins/org.python.pydev_2.8.2.2013090511/pysrc')
 
-from pydevd import *
+#from pydevd import *
 
 ## @package eaf
 #  This package implements a EAF wizard.  
@@ -58,7 +58,7 @@ class eaf:
     ##########################################################
     def __init__(self, iface):
         #Debug VERSION: REMOVE THIS FOR RELEASE!!! /////////////7
-        settrace()        
+        #settrace()        
         
         # Save reference to the QGIS interface
         self.iface = iface

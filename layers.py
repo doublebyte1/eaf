@@ -178,9 +178,9 @@ class LyrMngr:
         
         return True;
 
-    def createLayerFromCountry(self,eaf,names)    :            
+    def createLayerFromCountry(self,eaf,layerName,names)    :            
 
-        aLayer=self.layerList[strCountries]# find countries layer
+        aLayer=self.layerList[layerName]# find countries layer
         cLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
         
         if not cLayer.isValid():
@@ -246,8 +246,8 @@ class LyrMngr:
                                         
         return ok
     
-    def readCountries(self):
-        aLayer=self.layerList[strCountries]# find countries layer
+    def readCountries(self,layerName):
+        aLayer=self.layerList[layerName]# find countries layer
         vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
         
         if not vLayer.isValid():
@@ -267,4 +267,10 @@ class LyrMngr:
                                             
         return noDups
     
-
+    def layerExists(self,layerName):
+        aLayer=self.layerList[layerName]# find countries layer
+        vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        
+        return vLayer.isValid()
+        
+        
