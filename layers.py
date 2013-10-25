@@ -42,8 +42,10 @@ strEezRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strEez)
 strWpiRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strWpi)
 strCountriesRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strCountries)
 
+strGrid=QtCore.QCoreApplication.translate("LyrMngr","grid")
+
 basepath = os.path.dirname(__file__)
-datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
+datapath = os.path.abspath(os.path.join(basepath, ".", "./data"))
 
 ## Layer
 #
@@ -95,6 +97,8 @@ class LyrMngr:
         layerList[strEezRclp]=aLayer( "reclipped_eez.shp", strEezRclp,"World_EEZ_LR_v7_2012.qml")
         layerList[strCountriesRclp]=aLayer( "reclipped_countries.shp",  strCountriesRclp ,"g0000_0.qml")
         layerList[strWpiRclp]=aLayer("reclipped_ports.shp",  strWpiRclp, "WPI.qml")
+
+        layerList[strGrid]=aLayer("grid.shp",  strGrid, None)
         
         self.layerList=layerList
                                       
@@ -273,4 +277,19 @@ class LyrMngr:
         
         return vLayer.isValid()
         
+    def createGrid(self):
+        
+        aLayer=self.layerList[strCountriesRclp]# find countries layer
+        vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        
+        if not vLayer.isValid():
+            return False        
+        
+        gLayer=self.layerList[strGrid]
+        
+        processing.runalg("qgis:creategrid", vLayer.extent().height()/250, vLayer.extent().height()/250, vLayer.extent().width(), vLayer.extent().height(),
+                           vLayer.extent().center().x(), vLayer.extent().center().y(), 1, vLayer.crs(),
+                           gLayer.filename)
+        
+        return True
         

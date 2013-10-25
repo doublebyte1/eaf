@@ -362,7 +362,9 @@ class page4dialog(myWizardPage):
     def nextId(self):
         ind=self.ui.cmbBathymetry.currentIndex()
         if ind==2:
-            return 41
+            #TODO: change this later to another place
+            if self.mywiz.lyrMngr.createGrid():
+                return 41            
         #elif ind==2:
          #   return 3
         #elif ind==3:
@@ -385,7 +387,7 @@ class page4_1dialog(myWizardPage):
         return 50
 
     def setLayers(self):
-        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp])
+        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp,layers.strGrid])
         self.zoomFull()
 
 class page5dialog(myWizardPage):
