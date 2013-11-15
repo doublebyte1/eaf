@@ -33,6 +33,8 @@ from qgis.utils import *
 from dock import Ui_DockWidget
 from wizard import Ui_Wizard
 
+from dlgoptions import Ui_DlgOptions
+
 from pages import  page0dialog
 from pages import  page1dialog
 from pages import  page1_1dialog
@@ -49,9 +51,6 @@ from pages import  page6dialog
 from pages import  page7dialog
 
 from layers import LyrMngr
-
-basepath = os.path.dirname(__file__)
-datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 
 ## wiz
 #
@@ -72,6 +71,51 @@ class wiz(QtGui.QWizard):
         
     def houseKeeping(self):
         self.lyrMngr.removeAll()
+        self.eaf.dockWidget.ui.toolOptions.setVisible(False)
+        self.eaf.dockWidget.ui.lbOptions.setVisible(False)
+        
+## dlgoptions
+#
+#  Class that implements the options dialogue; 
+#
+################################################    
+class options(QtGui.QDialog):
+    
+    ok = QtCore.pyqtSignal()     
+    undoText=""
+    
+    def __init__(self,eaf):
+        QtGui.QDialog.__init__(self)
+        self.ui = Ui_DlgOptions()
+        self.ui.setupUi(self)
+        self.eaf=eaf
+                
+    def validatePath(self,path):
+        aDir=QtCore.QDir(path)
+        return aDir.exists()        
+                                               
+    def setDataPath(self):
+        dir = QtGui.QFileDialog.getExistingDirectory(self, unicode("Set Directory"),
+            QtCore.QDir.tempPath(),
+            QtGui.QFileDialog.ShowDirsOnly
+            | QtGui.QFileDialog.DontResolveSymlinks);
+
+        self.ui.lineData.setText(dir)
+        
+    def accept(self):
+        if self.validatePath(self.ui.lineData.text()):
+            self.ok.emit()
+            self.hide()
+        else:            
+            self.eaf.iface.messageBar().pushMessage("Error", "Invalid Directory", level=QgsMessageBar.CRITICAL)
+            self.ui.lineData.setText(self.undoText)
+            
+    def reject(self):
+        self.ui.lineData.setText(self.undoText)
+        self.hide()
+        
+    def showEvent(self, event):
+        self.undoText=self.ui.lineData.text()        
        
 ## EAF Dialogue
 #
@@ -92,15 +136,33 @@ class eafdialog(QtGui.QDockWidget):
         self.ui = Ui_DockWidget()        
         self.ui.setupUi(self)        
         self.mywiz=wiz(eaf)
-        
+        self.options = options(eaf)
+        self.options.ui.lineData.setText(self.mywiz.lyrMngr.datapath)
+                
         self.ui.verticalLayout.insertWidget(0,self.mywiz)
         self.mywiz.setVisible(False)
-                
+        
+        self.ui.toolOptions.setVisible(False)
+        self.ui.lbOptions.setVisible(False)            
+                        
         QtCore.QObject.connect(self.mywiz, QtCore.SIGNAL("currentIdChanged(int)"), self.updateProgress)
-             
+        QtCore.QObject.connect(self.mywiz, QtCore.SIGNAL("currentIdChanged(int)"), self.enableDataPath)
+        QtCore.QObject.connect(self.options, QtCore.SIGNAL("ok()"),self.setUserDataPathFromLine)
+        QtCore.QObject.connect(self.mywiz.lyrMngr, QtCore.SIGNAL("dataPathChanged(QString)"),self.updateLineEdit)
+        
         self.eaf=eaf
         self.initPages()
         self.countPages()
+
+    def updateLineEdit(self,path):
+        if (self.options.ui.lineData.text()!=path):
+            self.options.ui.lineData.setText(path)
+        
+    def setUserDataPathFromLine(self):
+        self.setUserDataPath(self.options.ui.lineData.text())
+
+    def setUserDataPath(self,aPath):
+        self.mywiz.lyrMngr.setUserDataPath(aPath)
      
     ## Counts the number of pages in the Wizard
     #
@@ -154,11 +216,15 @@ class eafdialog(QtGui.QDockWidget):
         
         if not self.mywiz.isVisible():
             self.mywiz.setVisible(True)
+            self.ui.toolOptions.setVisible(True)
+            self.ui.lbOptions.setVisible(True)            
             
         self.mywiz.restart()
                 
         for i in self.mywiz.pageIds():
             self.mywiz.page(i).resetUI() 
+            
+        self.mywiz.lyrMngr.restart()
               
     ## Open Project
     #
@@ -185,22 +251,47 @@ class eafdialog(QtGui.QDockWidget):
                 print 'Error parsing json:', e
                 raise
     
-            curPage=data["curPage"]
+            try:            
+                self.readDataPath(data["dataPath"])
+            except Exception as e:
+                print 'Error setting data path:', e
+                raise
+
+            #Remove any existing layers before loading new ones
+            self.mywiz.lyrMngr.removeAll()
             
-            
+            curPage=data["curPage"]                        
             try:
                 self.setCurPage(curPage)
-            except Exception:
+            except Exception as e:
                 print 'Error setting current page:', e
                 raise
             
             try:            
                 self.readPageUI(curPage,data["curUI"])
-            except Exception:
+            except Exception as e:
                 print 'Error setting current page UI:', e
-                raise
+                raise                          
              
+            
              
+    ## Show Options
+    #
+    #  Calls the dlgOptions dialogue.
+    ##########################################################                                  
+    def showOptions(self):
+                
+        if not self.options.isVisible():
+            self.options.show()        
+
+    def readDataPath(self,path):
+        
+        if self.options.validatePath(path):
+            self.setUserDataPath(path)            
+        else:
+            #self.eaf.iface.messageBar().pushMessage("Error", "Invalid Data Path", level=QgsMessageBar.CRITICAL)
+            raise Exception('Invalid Data Path')
+                         
     ## Set Current Page
     #
     #  This function is used by OpenProject.     
@@ -211,8 +302,10 @@ class eafdialog(QtGui.QDockWidget):
 
         if not self.mywiz.isVisible():
             self.mywiz.setVisible(True)
+            self.ui.toolOptions.setVisible(True)
+            self.ui.lbOptions.setVisible(True)                        
             
-        self.mywiz.restart()        
+        self.mywiz.restart()
 
     ## Read Page UI
     #
@@ -222,7 +315,6 @@ class eafdialog(QtGui.QDockWidget):
     def readPageUI(self,ID,strUI):
         myPage=self.mywiz.page(ID)
         myPage.readPageUI(strUI)
-
         
     ## Save Project
     #
@@ -236,8 +328,9 @@ class eafdialog(QtGui.QDockWidget):
         if filename:            
             ID=self.getCurPage()
             UI=self.getPageUI()
+            datapath=self.mywiz.lyrMngr.userPath
     
-            data = {"curPage": ID, "curUI": UI}
+            data = {"curPage": ID, "curUI": UI, "dataPath": datapath}
     
             with open(filename, 'w') as outfile:
                 json.dump(data, outfile)
@@ -276,3 +369,12 @@ class eafdialog(QtGui.QDockWidget):
             val=(cid/10+1)*100/total
             self.ui.progressBar.setValue(val)
             
+    ## Enable Data Path
+    #
+    #  This function is called by a signal, emitted every time we change page.
+    # It enables/disables the data path lineEdit, according to the current page ID
+    ##########################################################                                   
+    def enableDataPath(self,index):
+        cut=20
+        self.options.ui.lineData.setEnabled(index < cut)
+        self.options.ui.toolData.setEnabled(index < cut)

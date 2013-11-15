@@ -37,7 +37,7 @@ datapath = os.path.abspath(os.path.join(basepath, "..", "eaf/data"))
 #  It provides all sorts of virtual methods, and it stores pointers to the eaf class and to the wizard.
 ################################################   
 class myWizardPage(QtGui.QWizardPage):
-    
+
     def __init__(self,eaf,mywiz):
         self.eaf=eaf
         self.mywiz=mywiz
@@ -401,7 +401,7 @@ class page5dialog(myWizardPage):
         return 60
 
     def setLayers(self):
-        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp])
+        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp,layers.strGrid])
         self.zoomFull()
  
 class page6dialog(myWizardPage):
@@ -431,5 +431,5 @@ class page7dialog(myWizardPage):
         return -1 # for the moment, this is the last page
 
     def setLayers(self):    
-        self.mywiz.lyrMngr.setLayers([layers.strCountries,layers.strEez,layers.strWpi])
+        self.mywiz.lyrMngr.setLayers([layers.strEezRclp,layers.strWpiRclp,layers.strCountriesRclp])
         self.zoomFull()

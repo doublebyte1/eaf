@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dock.ui'
 #
-# Created: Fri Oct 11 10:26:10 2013
+# Created: Wed Nov 13 15:41:08 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -58,6 +58,7 @@ class Ui_DockWidget(object):
         QtCore.QObject.connect(self.pushNew, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.newProject)
         QtCore.QObject.connect(self.pushOpen, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.openProject)
         QtCore.QObject.connect(self.pushSave, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.saveProject)
+        QtCore.QObject.connect(self.toolOptions, QtCore.SIGNAL(_fromUtf8("clicked()")), DockWidget.showOptions)
         QtCore.QMetaObject.connectSlotsByName(DockWidget)
 
     def retranslateUi(self, DockWidget):

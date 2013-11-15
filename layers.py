@@ -20,6 +20,7 @@ import sys, os.path
 import json
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import QObject, pyqtSignal 
 from PyQt4.QtCore import QAbstractListModel
  
 from qgis.core import *
@@ -45,22 +46,22 @@ strCountriesRclp=QtCore.QCoreApplication.translate("LyrMngr","reclipped " + strC
 strGrid=QtCore.QCoreApplication.translate("LyrMngr","grid")
 
 basepath = os.path.dirname(__file__)
-datapath = os.path.abspath(os.path.join(basepath, ".", "./data"))
 
 ## Layer
 #
-#  This is a layer structure, that contains a name, a filename, and a style filename. 
+#  This is a layer structure, that contains a name, a filename, a style filename, and a path. 
 #  It is provided for convenience, as we can store these objects lightly in a container, and instantiate them at any moment.
 ################################################   
-class aLayer:
+class aLayer:    
     ## Constructor
     #
     #  This is a constructor
     ##########################################################
-    def __init__(self,filename,name,style):
+    def __init__(self,filename,name,style,datapath):
         self.name=name
         self.filename=filename
         self.style=style
+        self.datapath=datapath
 
 ## Layer Manager
 #
@@ -68,37 +69,59 @@ class aLayer:
 #  Here we store a dictionary with all the layers we need, and we manage them, by adding them/ removing them from the map view.
 #  We also perform operations that generate new layers (e.g.: clipping); in reality, all the GIS code is in this class.
 ################################################   
-class LyrMngr:
+class LyrMngr(QtCore.QObject):
+    
+    #This is our internal datapath for storage (base layers)        
+    datapath = os.path.abspath(os.path.join(basepath, ".", "./data"))
+    userPath=datapath
+    
+    dataPathChanged = QtCore.pyqtSignal(str)  
     ## Constructor
     #
     #  This is a constructor
     ##########################################################
     def __init__(self):
+        super(LyrMngr, self).__init__()
+         
         self.initLayers()                
 
+    ## Set User Data Path
+    #
+    #  Sets data path on generated layers, to a user defined value
+    ##########################################################
+    def setUserDataPath(self,aPath):
+        for x in self.layerList.keys():
+            if (x != strCountries) and (x != strEez) and (x !=  strWpi) :
+                self.layerList[x].datapath=aPath
 
-    def initVLayer(self,filename,name):
+        self.userPath=aPath
+        self.dataPathChanged.emit(aPath)
+         
+    def restart(self):
+        self.setUserDataPath(self.datapath)
+
+    def initVLayer(self,filename,name,datapath):
         return QgsVectorLayer(os.path.join(datapath, filename), name, "ogr")
 
     def initLayers(self):
 
         layerList=dict()
         
-        layerList[strCountries]=aLayer("g0000_0.shp",strCountries,"g0000_0.qml")
-        layerList[strEez]=aLayer("World_EEZ_LR_v7_2012.shp",strEez,"World_EEZ_LR_v7_2012.qml")
-        layerList[strWpi]=aLayer("WPI.shp",strWpi,"WPI.qml")
+        layerList[strCountries]=aLayer("g0000_0.shp",strCountries,"g0000_0.qml",self.datapath)
+        layerList[strEez]=aLayer("World_EEZ_LR_v7_2012.shp",strEez,"World_EEZ_LR_v7_2012.qml",self.datapath)
+        layerList[strWpi]=aLayer("WPI.shp",strWpi,"WPI.qml",self.datapath)
                 
-        layerList[strSelection]=aLayer( None, strSelection,None) #memory layer
+        layerList[strSelection]=aLayer( None, strSelection,None,None) #memory layer
         
-        layerList[strEezClp]=aLayer( "clipped_eez.shp", strEezClp,"World_EEZ_LR_v7_2012.qml")
-        layerList[strCountriesClp]=aLayer( "clipped_countries.shp",  strCountriesClp ,"g0000_0.qml")
-        layerList[strWpiClp]=aLayer("clipped_ports.shp",  strWpiClp, "WPI.qml")
+        layerList[strEezClp]=aLayer( "clipped_eez.shp", strEezClp,"World_EEZ_LR_v7_2012.qml",self.datapath)
+        layerList[strCountriesClp]=aLayer( "clipped_countries.shp",  strCountriesClp ,"g0000_0.qml",self.datapath)
+        layerList[strWpiClp]=aLayer("clipped_ports.shp",  strWpiClp, "WPI.qml",self.datapath)
 
-        layerList[strEezRclp]=aLayer( "reclipped_eez.shp", strEezRclp,"World_EEZ_LR_v7_2012.qml")
-        layerList[strCountriesRclp]=aLayer( "reclipped_countries.shp",  strCountriesRclp ,"g0000_0.qml")
-        layerList[strWpiRclp]=aLayer("reclipped_ports.shp",  strWpiRclp, "WPI.qml")
+        layerList[strEezRclp]=aLayer( "reclipped_eez.shp", strEezRclp,"World_EEZ_LR_v7_2012.qml",self.datapath)
+        layerList[strCountriesRclp]=aLayer( "reclipped_countries.shp",  strCountriesRclp ,"g0000_0.qml",self.datapath)
+        layerList[strWpiRclp]=aLayer("reclipped_ports.shp",  strWpiRclp, "WPI.qml",self.datapath)
 
-        layerList[strGrid]=aLayer("grid.shp",  strGrid, None)
+        layerList[strGrid]=aLayer("grid.shp",  strGrid, None,self.datapath)
         
         self.layerList=layerList
                                       
@@ -128,15 +151,22 @@ class LyrMngr:
     def loadLayer(self,aLayer):
         if len(QgsMapLayerRegistry.instance().mapLayersByName(aLayer.name)) ==0:
             
-            vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+            vLayer=QgsVectorLayer(os.path.join(aLayer.datapath, aLayer.filename), aLayer.name, "ogr")
             if not vLayer.isValid():
                 raise Exception("Invalid Layer: " + aLayer.name)
             
-            #iface.messageBar().pushMessage("Error", "I'm sorry Dave, I'm afraid I can't \
-             # do that", level=QgsMessageBar.CRITICAL)
-
+            #Setting the crs (in case the file does not have one!)  
+            aCrs=vLayer.crs()
+            if not aCrs.isValid():
+                crs = QgsCoordinateReferenceSystem()
+                crs.createFromProj4("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+                if not crs.isValid():
+                    raise Exception ("invalid crs")
+                
+                aCrs=crs
+                                                        
             if aLayer.style is not None:
-                vLayer.loadNamedStyle(os.path.join(datapath, aLayer.style))
+                vLayer.loadNamedStyle(os.path.join(aLayer.datapath, aLayer.style))
                                                                   
             QgsMapLayerRegistry.instance().addMapLayer(vLayer)
 
@@ -185,7 +215,7 @@ class LyrMngr:
     def createLayerFromCountry(self,eaf,layerName,names)    :            
 
         aLayer=self.layerList[layerName]# find countries layer
-        cLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        cLayer=QgsVectorLayer(os.path.join(aLayer.datapath, aLayer.filename), aLayer.name, "ogr")
         
         if not cLayer.isValid():
             raise Exception("Invalid Layer: " + aLayer.name)
@@ -223,36 +253,36 @@ class LyrMngr:
         
         return True;
                     
-    def clipLayer(self,input,clip,output):
+    def clipLayer(self,input_,clip,datapath,output):
         #TODO: change this to generate a memory layer?
-        return processing.runalg("qgis:clip",input,clip,os.path.join(datapath, output))
+        return processing.runalg("qgis:clip",input_,clip,os.path.join(datapath, output))
 
                     
     def clipLayers(self):
         ok=True
-        if not self.clipLayer(self.layerList[strEez].name,strSelection,self.layerList[strEezClp].filename):
+        if not self.clipLayer(self.layerList[strEez].name,strSelection,self.layerList[strEezClp].datapath,self.layerList[strEezClp].filename):
             ok=False        
-        if not self.clipLayer(self.layerList[strCountries].name,strSelection,self.layerList[strCountriesClp].filename):
+        if not self.clipLayer(self.layerList[strCountries].name,strSelection,self.layerList[strCountriesClp].datapath,self.layerList[strCountriesClp].filename):
             ok=False
-        if not self.clipLayer(self.layerList[strWpi].name,strSelection,self.layerList[strWpiClp].filename):
+        if not self.clipLayer(self.layerList[strWpi].name,strSelection,self.layerList[strWpiClp].datapath,self.layerList[strWpiClp].filename):
             ok=True
                                         
         return ok
 
     def reclipLayers(self):
         ok=True
-        if not self.clipLayer(self.layerList[strEezClp].name,strSelection,self.layerList[strEezRclp].filename):
+        if not self.clipLayer(self.layerList[strEezClp].name,strSelection,self.layerList[strEezRclp].datapath,self.layerList[strEezRclp].filename):
             ok=False        
-        if not self.clipLayer(self.layerList[strCountriesClp].name,strSelection,self.layerList[strCountriesRclp].filename):
+        if not self.clipLayer(self.layerList[strCountriesClp].name,strSelection,self.layerList[strCountriesRclp].datapath,self.layerList[strCountriesRclp].filename):
             ok=False
-        if not self.clipLayer(self.layerList[strWpiClp].name,strSelection,self.layerList[strWpiRclp].filename):
+        if not self.clipLayer(self.layerList[strWpiClp].name,strSelection,self.layerList[strWpiRclp].datapath,self.layerList[strWpiRclp].filename):
             ok=True
                                         
         return ok
     
     def readCountries(self,layerName):
         aLayer=self.layerList[layerName]# find countries layer
-        vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        vLayer=QgsVectorLayer(os.path.join(aLayer.datapath, aLayer.filename), aLayer.name, "ogr")
         
         if not vLayer.isValid():
             raise Exception("Invalid Layer: " + aLayer.name)
@@ -273,23 +303,24 @@ class LyrMngr:
     
     def layerExists(self,layerName):
         aLayer=self.layerList[layerName]# find countries layer
-        vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        vLayer=QgsVectorLayer(os.path.join(aLayer.datapath, aLayer.filename), aLayer.name, "ogr")
         
         return vLayer.isValid()
         
     def createGrid(self):
         
         aLayer=self.layerList[strCountriesRclp]# find countries layer
-        vLayer=QgsVectorLayer(os.path.join(datapath, aLayer.filename), aLayer.name, "ogr")
+        vLayer=QgsVectorLayer(os.path.join(aLayer.datapath, aLayer.filename), aLayer.name, "ogr")
         
         if not vLayer.isValid():
             return False        
         
         gLayer=self.layerList[strGrid]
-        
+
+        #TODO: There is a problem with the crs of the grid (it is not coming correctly!!!!)
+                             
         processing.runalg("qgis:creategrid", vLayer.extent().height()/250, vLayer.extent().height()/250, vLayer.extent().width(), vLayer.extent().height(),
-                           vLayer.extent().center().x(), vLayer.extent().center().y(), 1, vLayer.crs(),
-                           gLayer.filename)
+                           vLayer.extent().center().x(), vLayer.extent().center().y(), 1, vLayer.crs(),os.path.join(gLayer.datapath, gLayer.filename))
         
         return True
         
